@@ -31,7 +31,7 @@ By default the folder containing the source files is ```shell src/``` and the fo
 
 The pug files depend on a number of configuration options that can be found in ```shell modules/config.js```:
 
-```json
+```js
 {
     // Identity variables used in pug templates
     identity: {
@@ -122,7 +122,7 @@ head
 
 The footer contains google's rich markup as ld+json:
 
-```json
+```js
 {
         "@context": "http://schema.org",
         "@type": "Article",
