@@ -28,6 +28,7 @@
     "del": "^2.2.2",
     "file-watcher-webpack-plugin": "^1.1.0",
     "mkdirp": "^0.5.1",
+    "ncp": "^2.0.0",
     "node-sass": "^4.3.0",
     "postcss-loader": "^1.2.2",
     "pre-build-webpack": "^0.1.0",

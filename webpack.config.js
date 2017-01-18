@@ -15,6 +15,7 @@ const site = require( __dirname + '/modules/config' )
 
 // Conversions
 const publishpug = require( __dirname + '/modules/publish-pug' )
+const publishassets = require( __dirname + '/modules/publish-assets' )
 
 // ///////////////////////////////
 // Plugins
@@ -60,7 +61,10 @@ const makeugly = new webpack.optimize.UglifyJsPlugin( {
 
 const prebuild = new WebpackPreBuildPlugin( stats => {
   // Delete old build and generate pug files
-  publishpug( site )
+  Promise.all( [
+    publishpug( site ),
+    publishassets( site )
+  ] )
 } )
 
 const watchall = new FileWatcherPlugin( {
