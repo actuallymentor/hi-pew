@@ -1,7 +1,7 @@
 {
-  "name": "new-generous-vpn",
+  "name": "static-page-boilerplate-webpack-browsersync",
   "version": "1.0.0",
-  "description": "New Generous VPN website and setup",
+  "description": "Static Webpage with Webpack and Browsersync Boilerplate",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actuallymentor/new-generous-vpn.git"
+    "url": "git+https://github.com/actuallymentor/static-webpage-boilerplate-webpack-browsersync.git"
   },
   "author": "Mentor Palokaj <mentor@palokaj.co> (https://github.com/actuallymentor)",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/actuallymentor/new-generous-vpn/issues"
+    "url": "https://github.com/actuallymentor/static-webpage-boilerplate-webpack-browsersync/issues"
   },
-  "homepage": "https://github.com/actuallymentor/new-generous-vpn#readme",
+  "homepage": "https://github.com/actuallymentor/static-webpage-boilerplate-webpack-browsersync#readme",
   "dependencies": {
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
