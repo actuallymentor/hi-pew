@@ -68,9 +68,11 @@ In pug this configuration object is passed as ```js const site = require( config
 
 ## SEO and Social
 
-Every page currently requires you to specify a variable: ```page``` that contains the title and details for the current page.
+Every page currently requires you to specify a variable: ```page``` that contains the title and details for the current page. 
 
-```js const page = { title: 'Home', desc: 'Home page', published: '2017-01-01', url: '/', featuredimg: '/image.jpg' }```
+```js
+const page = { title: 'Home', desc: 'Home page', published: '2017-01-01', url: '/', featuredimg: '/image.jpg' }
+```
 
 The pug template includes social sharing parameters in the header:
 
