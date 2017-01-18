@@ -14,7 +14,14 @@ const writefile = ( where, what ) => {
 
 // Delete a folder through the promise api
 const delp = what => {
-	return Promise.resolve( del.sync( [ what ] ) )
+	const delp = what => {
+		return new Promise( ( resolve, reject ) => {
+			fs.access( what, err => {
+				if ( !err ) return resolve( del.sync( [ what ] ) )
+				resolve( )
+			} )
+		} )
+	}
 }
 
 // Make directory if it does not exist yet
