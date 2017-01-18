@@ -31,6 +31,8 @@ To make the final build version:
 npm run build
 ```
 
+Note that the ```shell assets/``` folder is copied from the source to public directory.
+
 ## Configuration
 
 By default the folder containing the source files is ```shell src/``` and the folder containing the compiled website is ```shell public/```.
