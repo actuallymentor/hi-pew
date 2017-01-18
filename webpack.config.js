@@ -21,7 +21,7 @@ const publishpug = require( __dirname + '/modules/publish-pug' )
 // ///////////////////////////////
 const bsync = new BrowserSyncPlugin( {
   host: 'localhost',
-  open: false,
+  open: true,
   port: 3000,
   server: { 
     baseDir: [ __dirname + '/public' ],
