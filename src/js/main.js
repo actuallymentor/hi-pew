@@ -1,2 +1,2 @@
 // Grab styles
-import '../css/styles.scss'
+import styles from '../css/styles.scss'
