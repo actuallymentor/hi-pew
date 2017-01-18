@@ -2,6 +2,11 @@ const fs = require( 'fs' )
 const del = require( 'del' )
 const mkdirp = require( 'mkdirp' )
 
+process.on( 'unhandledRejection', ( error, promise ) => {
+		console.log( 'UPR: ' + promise + ' with ' + error )
+		console.log( error.stack )
+	} )
+
 // Promise structure for writing a file to disk
 const writefile = ( where, what ) => {
 	return new Promise( ( resolve, reject ) => {
@@ -14,14 +19,12 @@ const writefile = ( where, what ) => {
 
 // Delete a folder through the promise api
 const delp = what => {
-	const delp = what => {
-		return new Promise( ( resolve, reject ) => {
-			fs.access( what, err => {
-				if ( !err ) return resolve( del.sync( [ what ] ) )
-				resolve( )
-			} )
+	return new Promise( ( resolve, reject ) => {
+		fs.access( what, err => {
+			if ( !err ) return resolve( del.sync( [ what ] ) )
+			resolve( )
 		} )
-	}
+	} )
 }
 
 // Make directory if it does not exist yet
