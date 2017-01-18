@@ -1,5 +1,10 @@
 # Static Page Boilerplate using Webpack & Browsersync
 
+<img height="50px" alt="webpack" src="http://i.imgur.com/xz36f45.png" />
+<img height="50px" alt="browsersync" src="http://i.imgur.com/L5peje9.png" />
+<img height="50px" alt="pug" src="http://i.imgur.com/x4sHEg4.png" />
+
+
 THis repo sets up a development environment where you can hapily edit your .pug, .scss and .js files while your development server automatically updates when you save.
 
 Workflow:
