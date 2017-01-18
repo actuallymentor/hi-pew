@@ -6,7 +6,7 @@
 <img height="50px" alt="sass" src="http://i.imgur.com/O9ikKdz.png" />
 
 
-THis repo sets up a development environment where you can hapily edit your .pug, .scss and .js files while your development server automatically updates when you save.
+This repo sets up a development environment where you can happily edit your .pug, .scss and .js files while your development server automatically updates when you save.
 
 Workflow:
 
