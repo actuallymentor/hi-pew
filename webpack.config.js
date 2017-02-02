@@ -29,7 +29,7 @@ const publishassets = require( __dirname + '/modules/publish-assets' )
 // Watch for pug file changes
 const towatch = [ 'pug' ]
 
-fs.watch( site.system.source, ( eventType, filename ) => {
+if ( process.env.NODE_ENV == 'development' ) fs.watch( site.system.source, ( eventType, filename ) => {
   if ( eventType != 'change' || filename.indexOf( towatch ) == -1 ) return
   if ( process.env.debug ) console.log( 'It is a pug file' )
   // Delete old build and generate pug files
@@ -37,7 +37,7 @@ fs.watch( site.system.source, ( eventType, filename ) => {
 } )
 
 // Watch for asset changes
-fs.watch( site.system.source + 'assets/', ( eventType, filename ) => {
+if ( process.env.NODE_ENV == 'development' ) fs.watch( site.system.source + 'assets/', ( eventType, filename ) => {
   if ( eventType != 'change') return
   if ( process.env.debug ) console.log( 'It is an asset file' )
   // Delete old build and generate pug files
@@ -47,7 +47,7 @@ fs.watch( site.system.source + 'assets/', ( eventType, filename ) => {
 // ///////////////////////////////
 // Plugins
 // ///////////////////////////////
-const bsync = new BrowserSyncPlugin( {
+const bsconfig = {
   host: 'localhost',
   open: true,
   port: 3000,
@@ -74,41 +74,43 @@ const bsync = new BrowserSyncPlugin( {
     "text-align: center"
     ]
   }
-} )
-const setenv = new webpack.DefinePlugin( {
-  'process.env': {
-    NODE_ENV: JSON.stringify( 'production' )
-  }
-} )
-const makeugly = new webpack.optimize.UglifyJsPlugin( {
+}
+
+const uglifyconfig = {
   compress: {
     warnings: false
   }
-})
+}
+
+const envconfig = {
+  'process.env': {
+    NODE_ENV: JSON.stringify( 'production' )
+  }
+}
 
 
 const pluginarray = ( env, server ) => {
+  let plugins = []
+
   if ( env == 'production' ) {
-    if ( server ) {
-      return [
-      setenv,
-      makeugly,
-      bsync
-      ]
-    } else {
-      return [
-      setenv,
-      makeugly
-      ]
-    }
-  } else if ( env == 'development' ) {
-    return [
-    bsync
-    ]
+    if ( server ) plugins.push( 
+        new BrowserSyncPlugin( bsconfig )
+    )
+    plugins.push(
+      new webpack.optimize.UglifyJsPlugin( uglifyconfig )
+    )
+    plugins.push(
+      new webpack.DefinePlugin( envconfig )
+    )
   } else {
-    return []
+    plugins.push(
+      new BrowserSyncPlugin( bsconfig )
+    )
   }
+
+  return plugins
 }
+
 const maps = env => {
   if( env == 'production' ) {
     return 'cheap-module-source-map'
@@ -117,8 +119,9 @@ const maps = env => {
   }
 }
 
+console.log( pluginarray( process.env.NODE_ENV, process.env.server ) )
+
 module.exports = {
-  watch: true,
   entry: site.system.source + 'js/main.js',
   output: {
     filename: site.system.public + 'js/app.js'
