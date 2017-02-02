@@ -52,7 +52,7 @@ const bsync = new BrowserSyncPlugin( {
   open: true,
   port: 3000,
   server: { 
-    baseDir: [ __dirname + '/public' ],
+    baseDir: [ site.system.public ],
     serveStaticOptions: {
       extensions: ['html']
     }
