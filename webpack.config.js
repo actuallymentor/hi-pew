@@ -119,8 +119,6 @@ const maps = env => {
   }
 }
 
-console.log( pluginarray( process.env.NODE_ENV, process.env.server ) )
-
 module.exports = {
   entry: site.system.source + 'js/main.js',
   output: {
