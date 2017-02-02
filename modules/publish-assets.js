@@ -17,7 +17,7 @@ const copyassets = site => {
 	return new Promise( ( resolve, reject ) => {
 		pfs.del( site.system.public + 'assets' ).then( f => {
 			return copyfolder( site.system.source + 'assets', site.system.public + 'assets' )
-		} )
+		} ).then( resolve ).catch( reject )
 	} )
 }
 

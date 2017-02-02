@@ -6,9 +6,8 @@ const autoprefixer = require ( 'autoprefixer' )
 const webpack = require( 'webpack' )
 
 // Workflow
-const WebpackPreBuildPlugin = require( 'pre-build-webpack' )
-const FileWatcherPlugin = require( 'file-watcher-webpack-plugin' )
 const pfs = require( __dirname + '/modules/parse-fs' )
+const fs = require( 'fs' )
 
 // Site config 
 const site = require( __dirname + '/modules/config' )
@@ -16,6 +15,34 @@ const site = require( __dirname + '/modules/config' )
 // Conversions
 const publishpug = require( __dirname + '/modules/publish-pug' )
 const publishassets = require( __dirname + '/modules/publish-assets' )
+
+// ///////////////////////////////
+// Watchers for non webpack files
+// ///////////////////////////////
+
+// Initial build
+  Promise.all( [
+    publishpug( site ),
+    publishassets( site )
+  ] ).then( f => { if ( process.env.debug ) console.log( 'Initial build done' ) } )
+
+// Watch for pug file changes
+const towatch = [ 'pug' ]
+
+fs.watch( site.system.source, ( eventType, filename ) => {
+  if ( eventType != 'change' || filename.indexOf( towatch ) == -1 ) return
+  if ( process.env.debug ) console.log( 'It is a pug file' )
+  // Delete old build and generate pug files
+  return publishpug( site ).then( f => { if ( process.env.debug ) console.log( 'Repeat build done' ) } ).catch( console.log.bind( console ) )
+} )
+
+// Watch for asset changes
+fs.watch( site.system.source + 'assets/', ( eventType, filename ) => {
+  if ( eventType != 'change') return
+  if ( process.env.debug ) console.log( 'It is an asset file' )
+  // Delete old build and generate pug files
+  return publishassets( site ).then( f => { if ( process.env.debug ) console.log( 'Repeat assets done' ) } ).catch( console.log.bind( console ) )
+} )
 
 // ///////////////////////////////
 // Plugins
@@ -59,18 +86,6 @@ const makeugly = new webpack.optimize.UglifyJsPlugin( {
   }
 })
 
-const prebuild = new WebpackPreBuildPlugin( stats => {
-  // Delete old build and generate pug files
-  Promise.all( [
-    publishpug( site ),
-    publishassets( site )
-  ] )
-} )
-
-const watchall = new FileWatcherPlugin( {
-      root: site.system.source,
-      files: ['*.pug', '*.scss']
-  } )
 
 const pluginarray = ( env, server ) => {
   if ( env == 'production' ) {
@@ -78,22 +93,17 @@ const pluginarray = ( env, server ) => {
       return [
       setenv,
       makeugly,
-      prebuild,
-      bsync,
-      watchall
+      bsync
       ]
     } else {
       return [
       setenv,
-      prebuild,
       makeugly
       ]
     }
   } else if ( env == 'development' ) {
     return [
-    prebuild,
-    bsync,
-    watchall
+    bsync
     ]
   } else {
     return []
