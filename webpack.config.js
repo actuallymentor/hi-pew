@@ -1,5 +1,6 @@
 // Browser sync stuff
 const BrowserSyncPlugin = require( 'browser-sync-webpack-plugin' )
+const bs = require( 'browser-sync' )
 
 // Webpack and css
 const autoprefixer = require ( 'autoprefixer' )
@@ -17,36 +18,10 @@ const publishpug = require( __dirname + '/modules/publish-pug' )
 const publishassets = require( __dirname + '/modules/publish-assets' )
 
 // ///////////////////////////////
-// Watchers for non webpack files
-// ///////////////////////////////
-
-// Initial build
-  Promise.all( [
-    publishpug( site ),
-    publishassets( site )
-  ] ).then( f => { if ( process.env.debug ) console.log( 'Initial build done' ) } )
-
-// Watch for pug file changes
-const towatch = [ 'pug' ]
-
-if ( process.env.NODE_ENV == 'development' ) fs.watch( site.system.source, ( eventType, filename ) => {
-  if ( eventType != 'change' || filename.indexOf( towatch ) == -1 ) return
-  if ( process.env.debug ) console.log( 'It is a pug file' )
-  // Delete old build and generate pug files
-  return publishpug( site ).then( f => { if ( process.env.debug ) console.log( 'Repeat build done' ) } ).catch( console.log.bind( console ) )
-} )
-
-// Watch for asset changes
-if ( process.env.NODE_ENV == 'development' ) fs.watch( site.system.source + 'assets/', ( eventType, filename ) => {
-  if ( eventType != 'change') return
-  if ( process.env.debug ) console.log( 'It is an asset file' )
-  // Delete old build and generate pug files
-  return publishassets( site ).then( f => { if ( process.env.debug ) console.log( 'Repeat assets done' ) } ).catch( console.log.bind( console ) )
-} )
-
-// ///////////////////////////////
 // Plugins
 // ///////////////////////////////
+let thebs
+const servername = 'bsserver'
 const bsconfig = {
   host: 'localhost',
   open: true,
@@ -75,6 +50,10 @@ const bsconfig = {
     ]
   }
 }
+const bsyncplugconfig = {
+  name: servername,
+  callback: f => { thebs = bs.get( servername ) }
+}
 
 const uglifyconfig = {
   compress: {
@@ -94,7 +73,7 @@ const pluginarray = ( env, server ) => {
 
   if ( env == 'production' ) {
     if ( server ) plugins.push( 
-        new BrowserSyncPlugin( bsconfig )
+        new BrowserSyncPlugin( bsconfig, bsyncplugconfig )
     )
     plugins.push(
       new webpack.optimize.UglifyJsPlugin( uglifyconfig )
@@ -104,12 +83,40 @@ const pluginarray = ( env, server ) => {
     )
   } else {
     plugins.push(
-      new BrowserSyncPlugin( bsconfig )
+      new BrowserSyncPlugin( bsconfig, bsyncplugconfig )
     )
   }
 
   return plugins
 }
+
+// ///////////////////////////////
+// Watchers for non webpack files
+// ///////////////////////////////
+
+// Initial build
+  Promise.all( [
+    publishpug( site ),
+    publishassets( site )
+  ] ).then( f => { if ( process.env.debug ) console.log( 'Initial build done' ) } )
+
+// Watch for pug file changes
+const towatch = [ 'pug' ]
+
+if ( process.env.NODE_ENV == 'development' ) fs.watch( site.system.source, ( eventType, filename ) => {
+  if ( eventType != 'change' || filename.indexOf( towatch ) == -1 ) return
+  if ( process.env.debug ) console.log( 'It is a pug file' )
+  // Delete old build and generate pug files
+  return publishpug( site ).then( f => { if ( process.env.debug ) console.log( 'Repeat build done' ); thebs.reload( ) } ).catch( console.log.bind( console ) )
+} )
+
+// Watch for asset changes
+if ( process.env.NODE_ENV == 'development' ) fs.watch( site.system.source + 'assets/', ( eventType, filename ) => {
+  if ( eventType != 'change') return
+  if ( process.env.debug ) console.log( 'It is an asset file' )
+  // Delete old build and generate pug files
+  return publishassets( site ).then( f => { if ( process.env.debug ) console.log( 'Repeat assets done' ); thebs.reload( ) } ).catch( console.log.bind( console ) )
+} )
 
 const maps = env => {
   if( env == 'production' ) {
