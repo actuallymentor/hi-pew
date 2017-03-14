@@ -1,9 +1,6 @@
 # Static Page Boilerplate using Webpack & Browsersync
 
-<img height="50px" style="float: left;" alt="webpack" src="http://i.imgur.com/xz36f45.png" />
-<img height="50px" style="float: left;" alt="browsersync" src="http://i.imgur.com/L5peje9.png" />
-<img height="50px" style="float: left;" alt="pug" src="http://i.imgur.com/x4sHEg4.png" />
-<img height="50px" style="float: left;" alt="sass" src="http://i.imgur.com/O9ikKdz.png" />
+<img height="50px" style="float: left;" alt="webpack" src="http://i.imgur.com/xz36f45.png" /> <img height="50px" style="float: left;" alt="browsersync" src="http://i.imgur.com/L5peje9.png" /> <img height="50px" style="float: left;" alt="pug" src="http://i.imgur.com/x4sHEg4.png" /> <img height="50px" style="float: left;" alt="sass" src="http://i.imgur.com/O9ikKdz.png" />
 
 
 This repo sets up a development environment where you can happily edit your .pug, .scss and .js files while your development server automatically updates when you save.
