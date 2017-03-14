@@ -28,13 +28,13 @@ To make the final build version:
 npm run build
 ```
 
-Note that the ```shell assets/``` folder is copied from the source to public directory.
+Note that the ``` assets/``` folder is copied from the source to public directory.
 
 ## Configuration
 
-By default the folder containing the source files is ```shell src/``` and the folder containing the compiled website is ```shell public/```.
+By default the folder containing the source files is ``` src/``` and the folder containing the compiled website is ``` public/```.
 
-The pug files depend on a number of configuration options that can be found in ```shell modules/config.js```:
+The pug files depend on a number of configuration options that can be found in ``` modules/config.js```:
 
 ```js
 {
@@ -69,7 +69,7 @@ The pug files depend on a number of configuration options that can be found in `
 }
 ```
 
-In pug this configuration object is passed as ```js const site = require( config.js )```.
+In pug this configuration object is passed as ``` const site = require( config.js )```.
 
 ## SEO and Social
 
