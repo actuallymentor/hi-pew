@@ -19,7 +19,6 @@ const publishassets = require( __dirname + '/modules/publish-assets' )
 
 // Get environment variables
 require('dotenv').config()
-console.log( process.env )
 
 // ///////////////////////////////
 // Plugins
