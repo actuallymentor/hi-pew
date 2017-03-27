@@ -17,7 +17,7 @@ Workflow:
 Basic usage:
 
 ```shell
-git clone git@github.com:actuallymentor/static-webpage-boilerplate-webpack-browsersync.git
+git clone https://github.com/actuallymentor/webpack-frontend-only.git
 npm install
 npm start # This will open the preview on your browser
 ```
