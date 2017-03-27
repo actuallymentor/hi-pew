@@ -17,6 +17,10 @@ const site = require( __dirname + '/modules/config' )
 const publishpug = require( __dirname + '/modules/publish-pug' )
 const publishassets = require( __dirname + '/modules/publish-assets' )
 
+// Get environment variables
+require('dotenv').config()
+console.log( process.env )
+
 // ///////////////////////////////
 // Plugins
 // ///////////////////////////////
