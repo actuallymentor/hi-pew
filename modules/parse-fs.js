@@ -54,5 +54,6 @@ const safewrite = ( path, file, content ) => {
 module.exports = {
 	write: writefile,
 	swrite: safewrite,
-	del: delp
+	del: delp,
+	mkdir: mkdir
 }

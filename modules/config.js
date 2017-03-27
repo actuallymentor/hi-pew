@@ -9,7 +9,7 @@ module.exports = {
 	system: {
 		public: __dirname + '/../public/',
 		source: __dirname + '/../src/',
-		url: process.env.local ? 'http://localhost:3000/' : 'https://www.liveurl.com',
+		url: process.env.NODE_ENV == 'production' ? 'https://www.liveurl.com' : 'http://localhost:3000/',
 		gverification: undefined,
 		year: new Date().getFullYear()
 	},

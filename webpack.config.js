@@ -7,8 +7,8 @@ const autoprefixer = require ( 'autoprefixer' )
 const webpack = require( 'webpack' )
 
 // Workflow
-const pfs = require( __dirname + '/modules/parse-fs' )
 const fs = require( 'fs' )
+const pfs = require( __dirname + '/modules/parse-fs' )
 
 // Site config 
 const site = require( __dirname + '/modules/config' )
@@ -54,57 +54,43 @@ const bsyncplugconfig = {
   name: servername,
   callback: f => { thebs = bs.get( servername ) }
 }
+// const pluginarray = ( env, server ) => {
+//   let plugins = []
 
-const uglifyconfig = {
-  compress: {
-    warnings: false
-  }
-}
+//   if ( env == 'production' ) {
+//     if ( server ) plugins.push( 
+//         new BrowserSyncPlugin( bsconfig, bsyncplugconfig )
+//     )
+//     plugins.push(
+//       new webpack.optimize.UglifyJsPlugin( uglifyconfig )
+//     )
+//     plugins.push(
+//       new webpack.DefinePlugin( envconfig )
+//     )
+//   } else {
+//     plugins.push(
+//       new BrowserSyncPlugin( bsconfig, bsyncplugconfig )
+//     )
+//   }
 
-const envconfig = {
-  'process.env': {
-    NODE_ENV: JSON.stringify( 'production' )
-  }
-}
+//   return plugins
+// }
 
 
-const pluginarray = ( env, server ) => {
-  let plugins = []
 
-  if ( env == 'production' ) {
-    if ( server ) plugins.push( 
-        new BrowserSyncPlugin( bsconfig, bsyncplugconfig )
-    )
-    plugins.push(
-      new webpack.optimize.UglifyJsPlugin( uglifyconfig )
-    )
-    plugins.push(
-      new webpack.DefinePlugin( envconfig )
-    )
-  } else {
-    plugins.push(
-      new BrowserSyncPlugin( bsconfig, bsyncplugconfig )
-    )
-  }
 
-  return plugins
-}
+const plugins = process.env.NODE_ENV == 'production' ?
+  [ new webpack.optimize.UglifyJsPlugin( { compress: { warnings: false }, sourceMap: true } ),
+    new webpack.DefinePlugin( { 'process.env': { NODE_ENV: JSON.stringify( 'production' ) } } ) ]
+  :
+  [ new BrowserSyncPlugin( bsconfig, bsyncplugconfig )  ]
 
 // ///////////////////////////////
 // Watchers for non webpack files
 // ///////////////////////////////
 
-// Initial build
-  Promise.all( [
-    publishpug( site ),
-    publishassets( site )
-  ] ).then( f => { if ( process.env.debug ) console.log( 'Initial build done' ) } )
-
-// Watch for pug file changes
-const towatch = [ 'pug' ]
-
 if ( process.env.NODE_ENV == 'development' ) fs.watch( site.system.source, ( eventType, filename ) => {
-  if ( eventType != 'change' || filename.indexOf( towatch ) == -1 ) return
+  if ( eventType != 'change' || filename.indexOf( 'pug' ) == -1 ) return
   if ( process.env.debug ) console.log( 'It is a pug file' )
   // Delete old build and generate pug files
   return publishpug( site ).then( f => { if ( process.env.debug ) console.log( 'Repeat build done' ); thebs.reload( ) } ).catch( console.log.bind( console ) )
@@ -126,29 +112,46 @@ const maps = env => {
   }
 }
 
-module.exports = {
-  entry: site.system.source + 'js/main.js',
-  output: {
-    filename: site.system.public + 'js/app.js'
-  },
-  module: {
-    loaders: [
-    {
-      test: /\.js$/,
-      loader: 'babel-loader',
-      query: {
-        presets: ['es2015']
-      }
-    },
-    {
-      test: /\.scss$/,
-      loaders: ["style", "css", "sass", "postcss"]
+module.exports = ( ) => {
+  return pfs.mkdir( site.system.public )
+  .then( f => {
+    return Promise.all( [ publishpug( site ), publishassets( site ) ] )
+  } )
+  .then( f => {
+    console.log( 'Initial build done' )
+    return {
+      entry: site.system.source + 'js/main.js',
+      output: {
+        filename: 'app.js',
+        path: `${site.system.public}js/`
+      },
+      module: {
+        rules: [
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            use: {
+              loader: 'babel-loader',
+              options: { presets: [ 'es2015' ] }
+            }
+          },
+          {
+            test: /\.scss$/,
+            use: [
+              "style-loader",
+              "css-loader",
+              {
+                loader: "postcss-loader",
+                options: {
+                  plugins: f => { return [ autoprefixer( { browsers: ['last 2 versions'] } ) ] }
+                }
+              },
+              "sass-loader" ]
+          }
+        ]
+      },
+      devtool: process.env.NODE_ENV == 'production' ?  'cheap-module-source-map' : 'eval',
+      plugins: plugins
     }
-    ]
-  },
-  devtool: maps( process.env.NODE_ENV ),
-  postcss: [
-  autoprefixer( { browsers: ['last 2 versions'] } )
-  ],
-  plugins: pluginarray( process.env.NODE_ENV, process.env.server )
+  } )
 }
