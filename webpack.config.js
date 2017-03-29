@@ -57,29 +57,6 @@ const bsyncplugconfig = {
   name: servername,
   callback: f => { thebs = bs.get( servername ) }
 }
-// const pluginarray = ( env, server ) => {
-//   let plugins = []
-
-//   if ( env == 'production' ) {
-//     if ( server ) plugins.push( 
-//         new BrowserSyncPlugin( bsconfig, bsyncplugconfig )
-//     )
-//     plugins.push(
-//       new webpack.optimize.UglifyJsPlugin( uglifyconfig )
-//     )
-//     plugins.push(
-//       new webpack.DefinePlugin( envconfig )
-//     )
-//   } else {
-//     plugins.push(
-//       new BrowserSyncPlugin( bsconfig, bsyncplugconfig )
-//     )
-//   }
-
-//   return plugins
-// }
-
-
 
 
 const plugins = process.env.NODE_ENV == 'production' ?
@@ -92,7 +69,7 @@ const plugins = process.env.NODE_ENV == 'production' ?
 // Watchers for non webpack files
 // ///////////////////////////////
 
-if ( process.env.NODE_ENV == 'development' ) fs.watch( site.system.source, ( eventType, filename ) => {
+if ( process.env.NODE_ENV == 'development' ) fs.watch( site.system.source, { recursive: true }, ( eventType, filename ) => {
   if ( eventType != 'change' || filename.indexOf( 'pug' ) == -1 ) return
   if ( process.env.debug ) console.log( 'It is a pug file' )
   // Delete old build and generate pug files
