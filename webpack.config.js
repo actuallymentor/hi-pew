@@ -18,7 +18,13 @@ const publishpug = require( __dirname + '/modules/publish-pug' )
 const publishassets = require( __dirname + '/modules/publish-assets' )
 
 // Get environment variables
-require('dotenv').config()
+require('dotenv').config( `${__dirname}/.env` )
+// Remap process env
+const stringify_env = f => {
+  let environment = {}
+  Object.keys( process.env ).map( ( key, index ) => { return environment[ key ] = JSON.stringify( process.env[ key ] ) } )
+  return environment
+}
 
 // ///////////////////////////////
 // Plugins
@@ -61,9 +67,11 @@ const bsyncplugconfig = {
 
 const plugins = process.env.NODE_ENV == 'production' ?
   [ new webpack.optimize.UglifyJsPlugin( { compress: { warnings: false }, sourceMap: true } ),
-    new webpack.DefinePlugin( { 'process.env': { NODE_ENV: JSON.stringify( 'production' ) } } ) ]
+    new webpack.DefinePlugin( { 'process.env': { NODE_ENV: JSON.stringify( 'production' ) } } ),
+    new webpack.DefinePlugin( stringify_env( ) ) ]
   :
-  [ new BrowserSyncPlugin( bsconfig, bsyncplugconfig )  ]
+  [ new BrowserSyncPlugin( bsconfig, bsyncplugconfig ),
+    new webpack.DefinePlugin( stringify_env( ) )  ]
 
 // ///////////////////////////////
 // Watchers for non webpack files
