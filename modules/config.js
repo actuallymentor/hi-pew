@@ -13,6 +13,7 @@ module.exports = {
 		source: __dirname + '/../src/',
 		url: process.env.NODE_ENV == 'production' ? 'https://www.liveurl.com/' : 'http://' + ip.address() + ':3000/',
 		gverification: undefined,
+		timestamp: new Date().getTime(),
 		year: new Date().getFullYear()
 	},
 	// About the author. Change this to your own unless you went me to get credit for your page of course... <3
