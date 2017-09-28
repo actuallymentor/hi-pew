@@ -9,9 +9,9 @@ module.exports = {
 	},
 	// System vars managing some pug elements as well as file paths
 	system: {
-		public: __dirname + '/../docs/',
+		public: process.env.NODE_ENV == 'production' ? __dirname + '/../docs/' : __dirname + '/../public/'
 		source: __dirname + '/../src/',
-		url: process.env.NODE_ENV == 'production' ? 'https://www.liveurl.com' : 'http://' + ip.address() + ':3000/',
+		url: process.env.NODE_ENV == 'production' ? 'https://www.liveurl.com/' : 'http://' + ip.address() + ':3000/',
 		gverification: undefined,
 		year: new Date().getFullYear()
 	},
