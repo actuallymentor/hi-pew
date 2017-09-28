@@ -9,7 +9,7 @@ module.exports = {
 	},
 	// System vars managing some pug elements as well as file paths
 	system: {
-		public: __dirname + '/../public/',
+		public: __dirname + '/../docs/',
 		source: __dirname + '/../src/',
 		url: process.env.NODE_ENV == 'production' ? 'https://www.liveurl.com' : 'http://' + ip.address() + ':3000/',
 		gverification: undefined,
