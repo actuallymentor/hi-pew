@@ -9,7 +9,7 @@ const webpack = require( 'webpack' )
 // Workflow
 const fs = require( 'fs' )
 const pfs = require( __dirname + '/modules/parse-fs' )
-const css = require( __dirname + '/modules/publish-css' )
+const { css } = require( __dirname + '/modules/publish-css' )
 
 
 // Site config 
