@@ -1,4 +1,5 @@
 const fs = require( 'fs' )
+const pathutil = require('path')
 const del = require( 'del' )
 const mkdirp = require( 'mkdirp' )
 
@@ -29,11 +30,12 @@ const delp = what => {
 
 // Make directory if it does not exist yet
 const mkdir = path => {
+	path = pathutil.normalize( path )
 	return new Promise( ( resolve, reject ) => {
 		// Check if folder exists
 		fs.access( path, err => {
 			if ( !err ) return resolve( )
-			// Mkdir -p so the path to the folder is creatd if it doesn't exist
+			// Mkdir -p so the path to the folder is created if it doesn't exist
 			mkdirp( path, err => {
 				if ( err ) return reject( )
 				resolve( )

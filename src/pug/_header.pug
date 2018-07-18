@@ -37,7 +37,7 @@ head
 	link( rel="dns-prefetch" href="//www.google-analytics.com" )
 	link( rel="dns-prefetch" href="//fonts.googleapis.com.com" )
 
-	//- Temporarily hide body, this is undone by the app stylesheet
-	style.
-		body { display: none; }
-	script( src=`${site.system.url}js/app.js?${site.system.timestamp}` async)
+	//- Load the css before the content loads
+	link( rel="stylesheet" type="text/css" href=site.system.url + 'assets/css/styles.css' )
+	//- Get the webpack script
+	script( src=site.system.url + `assets/js/app-${site.system.timestamp}.js` , async)

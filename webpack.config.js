@@ -9,6 +9,8 @@ const webpack = require( 'webpack' )
 // Workflow
 const fs = require( 'fs' )
 const pfs = require( __dirname + '/modules/parse-fs' )
+const css = require( __dirname + '/modules/publish-css' )
+
 
 // Site config 
 const site = require( __dirname + '/modules/config' )
@@ -41,37 +43,18 @@ const bsconfig = {
       extensions: ['html']
     }
   },
-  notify: {
-    styles:  [
-    "display: none",
-    "padding: 15px",
-    "font-family: sans-serif",
-    "position: fixed",
-    "font-size: 0.9em",
-    "z-index: 9999",
-    "bottom: 0px",
-    "right: 0px",
-    "border-bottom-left-radius: 5px",
-    "background-color: #1B2032",
-    "margin: 0",
-    "color: white",
-    "text-align: center"
-    ]
-  }
+  notify: false
 }
 const bsyncplugconfig = {
   name: servername,
   callback: f => { thebs = bs.get( servername ) }
 }
 
-
-const plugins = process.env.NODE_ENV == 'production' ?
-  [ new webpack.optimize.UglifyJsPlugin( { compress: { warnings: false }, sourceMap: true } ),
-    new webpack.DefinePlugin( { 'process.env': { NODE_ENV: JSON.stringify( 'production' ) } } ),
-    new webpack.DefinePlugin( stringify_env( ) ) ]
-  :
-  [ new BrowserSyncPlugin( bsconfig, bsyncplugconfig ),
-    new webpack.DefinePlugin( stringify_env( ) )  ]
+const envconfig = {
+  'process.env': {
+    NODE_ENV: JSON.stringify( 'production' )
+  }
+}
 
 // ///////////////////////////////
 // Watchers for non webpack files
@@ -101,17 +84,14 @@ const maps = env => {
 }
 
 module.exports = ( ) => {
-  return pfs.mkdir( site.system.public )
-  .then( f => {
-    return Promise.all( [ publishpug( site ), publishassets( site ) ] )
-  } )
+  return Promise.all( [ publishpug( site ), publishassets( site ), css( site ) ] )
   .then( f => {
     console.log( 'Initial build done' )
     return {
       entry: site.system.source + 'js/main.js',
       output: {
-        filename: 'app.js',
-        path: `${site.system.public}js/`
+        filename: `app-${site.system.timestamp}.js`,
+        path: `${site.system.public}assets/js/`
       },
       module: {
         rules: [
@@ -119,27 +99,13 @@ module.exports = ( ) => {
             test: /\.js$/,
             exclude: /node_modules/,
             use: {
-              loader: 'babel-loader',
-              options: { presets: [ 'es2015' ] }
+              loader: 'babel-loader'
             }
-          },
-          {
-            test: /\.scss$/,
-            use: [
-              "style-loader",
-              "css-loader",
-              {
-                loader: "postcss-loader",
-                options: {
-                  plugins: f => { return [ autoprefixer( { browsers: ['last 2 versions'] } ) ] }
-                }
-              },
-              "sass-loader" ]
           }
         ]
       },
       devtool: process.env.NODE_ENV == 'production' ?  'cheap-module-source-map' : 'eval',
-      plugins: plugins
+      plugins: process.env.NODE_ENV == 'production' ? [ new webpack.DefinePlugin( envconfig ) ] : [ new BrowserSyncPlugin( bsconfig, bsyncplugconfig ) ]
     }
-  } )
+  } ).catch( console.log.bind( console ) )
 }

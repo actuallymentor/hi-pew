@@ -1,2 +1,1 @@
-// Grab styles
-import styles from '../css/styles.scss'
+console.log( 'I am alive' )

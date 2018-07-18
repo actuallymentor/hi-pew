@@ -27,7 +27,9 @@ const writehtml = ( site, page ) => {
 // Combine the above two and the parse-pugfiles module to read, compile and write all pug files
 const publishfiles = site => {
 	return new Promise( ( resolve, reject ) => {
-		pugfiles( site.system.source ).then( pugfiles => {
+		pfs.mkdir( site.system.public )
+		.then( f => pugfiles( site.system.source ) )
+		.then( pugfiles => {
 			// Pugfiles have .filename and .data
 			return Promise.all( pugfiles.map( pugfile => { return compilepug( site.system.source, pugfile.filename ) } ) )
 		} ).then( htmls => {
