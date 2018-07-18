@@ -1,4 +1,4 @@
-# Webpack 2, frontend only
+# Webpack 4, frontend only
 
 <img height="50px" style="float: left;" alt="webpack" src="http://i.imgur.com/xz36f45.png" /> <img height="50px" style="float: left;" alt="browsersync" src="http://i.imgur.com/L5peje9.png" /> <img height="50px" style="float: left;" alt="pug" src="http://i.imgur.com/x4sHEg4.png" /> <img height="50px" style="float: left;" alt="sass" src="http://i.imgur.com/O9ikKdz.png" />
 
@@ -32,7 +32,7 @@ Note that the ``` assets/``` folder is copied from the source to public director
 
 ## Configuration
 
-By default the folder containing the source files is ``` src/``` and the folder containing the compiled website is ``` public/```.
+By default the folder containing the source files is ``` src/``` and the folder containing the compiled website is ``` public/``` in development mode and ```docs/``` in production mode.
 
 The pug files depend on a number of configuration options that can be found in ``` modules/config.js```:
 
