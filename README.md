@@ -2,10 +2,13 @@
 
 <img height="50px" style="float: left;" alt="webpack" src="http://i.imgur.com/xz36f45.png" /> <img height="50px" style="float: left;" alt="browsersync" src="http://i.imgur.com/L5peje9.png" /> <img height="50px" style="float: left;" alt="pug" src="http://i.imgur.com/x4sHEg4.png" /> <img height="50px" style="float: left;" alt="sass" src="http://i.imgur.com/O9ikKdz.png" />
 
-[Live Demo]( https://actuallymentor.github.io/webpack-frontend-only/ )
-
-
 This repo sets up a development environment where you can happily edit your .pug, .scss and .js files while your development server automatically updates when you save.
+
+The main optimisations are a high page speed score and built-in SEO structure. The only reason the page scored 99/100 page speed is because Google Analytics doesn't leverage browser caching sufficiently.
+
+![Page speed]( ./src/assets/page-speed.png )
+
+[Live Demo of a webpage built with this module]( https://actuallymentor.github.io/webpack-frontend-only/ )
 
 Workflow:
 
