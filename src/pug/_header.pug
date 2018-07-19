@@ -40,5 +40,14 @@ head
 	//- Load essential css
 	style.
 		#{ css }
+	//- Load the main css stylesheet if there is no js support
+	noscript: link( rel="stylesheet" type="text/css" href=site.system.url + 'assets/css/styles.css' )
+	//- Load the main css stylesheet if there is js support
+	script.
+		let link = document.createElement( "link" )
+		link.href = "#{ site.system.url + 'assets/css/styles.css' }"
+		link.type = "text/css"
+		link.rel = "stylesheet"
+		document.getElementsByTagName( "head" )[0].appendChild( link )
 	//- Get the webpack script
 	script( src=site.system.url + `assets/js/app-${site.system.timestamp}.js` , async)
