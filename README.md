@@ -14,6 +14,8 @@ Workflow:
 
 1. Make html structure using [ pug ]( https://github.com/pugjs )
 2. Write styling in [ Sass ]( https://github.com/sass/sass )
+    1. The `essential-above-the-fold.scss` is embedded into the header as a minified `<style>` element
+    1. The `styles.scss` is loaded with javascript
 3. Write js in ES2015 compiled by [ Webpack ]( https://github.com/webpack )
 4. Have an auto-refreshing browser preview using [ Browsersync ]( https://github.com/BrowserSync/browser-sync )
 
