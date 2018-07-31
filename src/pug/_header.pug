@@ -38,8 +38,7 @@ head
 	link( rel="dns-prefetch" href="//fonts.googleapis.com.com" )
 
 	//- Load essential css
-	style.
-		#{ css }
+	style!=css
 	//- Load the main css stylesheet if there is no js support
 	noscript: link( rel="stylesheet" type="text/css" href=site.system.url + 'assets/css/styles.css' )
 	//- Load the main css stylesheet if there is js support

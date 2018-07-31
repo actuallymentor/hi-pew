@@ -71,8 +71,8 @@ if ( process.env.NODE_ENV == 'development' ) fs.watch( site.system.source, { rec
   if ( eventType != 'change' || filename.indexOf( 'scss' ) == -1 ) return
   if ( process.env.debug ) console.log( 'It is a css file' )
   // Delete old build and generate pug/css files
-  if( filename.indexOf( 'essential' ) != -1 ) return publishpug( site ).then( f => { if ( process.env.debug ) console.log( 'Repeat pug build done' ); thebs.reload( ) } ).catch( console.log.bind( console ) )
-  else return css( site ).then( f => { if ( process.env.debug ) console.log( 'Repeat pug build done' ); thebs.reload( ) } ).catch( console.log.bind( console ) )
+    // Delete old build and generate pug/css files
+    return publishpug( site ).then( f => css( site ) ).then( f => { if ( process.env.debug ) console.log( 'Repeat pug build done' ); thebs.reload( ) } ).catch( console.log.bind( console ) )
 
 } )
 
