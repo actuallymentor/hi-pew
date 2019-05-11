@@ -3,30 +3,21 @@ const pathutil = require('path')
 const del = require( 'del' )
 const mkdirp = require( 'mkdirp' )
 
-process.on( 'unhandledRejection', ( error, promise ) => {
-		console.log( 'UPR: ' + promise + ' with ' + error )
-		console.log( error.stack )
-	} )
-
 // Promise structure for writing a file to disk
-const writefile = ( where, what ) => {
-	return new Promise( ( resolve, reject ) => {
-		fs.writeFile( where, what, err => {
-			if ( err ) return reject( err )
-			resolve( what )
-		} )
+const writefile = ( where, what ) => new Promise( ( resolve, reject ) => {
+	fs.writeFile( where, what, err => {
+		if ( err ) return reject( err )
+		resolve( what )
 	} )
-}
+} )
 
 // Delete a folder through the promise api
-const delp = what => {
-	return new Promise( ( resolve, reject ) => {
-		fs.access( what, err => {
-			if ( !err ) return resolve( del.sync( [ what ] ) )
-			resolve( )
-		} )
+const delp = what => new Promise( ( resolve, reject ) => {
+	fs.access( what, err => {
+		if ( !err ) return resolve( del.sync( [ what ] ) )
+		resolve( )
 	} )
-}
+} )
 
 // Make directory if it does not exist yet
 const mkdir = path => {
@@ -45,13 +36,8 @@ const mkdir = path => {
 }
 
 // Safely write a file by chacking if the path exists
-const safewrite = ( path, file, content ) => {
-	return new Promise( ( resolve, reject ) => {
-		mkdir( path ).then( f => {
-			return writefile( path + file, content )
-		} ).then( resolve ).catch( reject )
-	} )
-}
+const safewrite = ( path, file, content ) => mkdir( path )
+.then( f => writefile( path + file, content ) )
 
 module.exports = {
 	write: writefile,
