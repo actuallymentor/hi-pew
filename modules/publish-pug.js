@@ -3,6 +3,7 @@ const getContent = require( __dirname + '/parse-locales' )
 const pfs = require( __dirname + '/parse-fs' )
 const pug = require( 'pug' )
 const { inlinecss } = require( './publish-css' )
+const { minify } = require( 'html-minifier' )
 
 const site = require( __dirname + '/config' )
 
@@ -13,20 +14,22 @@ const compilepug = ( path, filename, css, content ) => Promise.resolve( {
 	filename: filename,
 	baseSlug: content.slug,
 	// Compile the pug file with the site config as a local variable
-	html: pug.renderFile( path + filename, { site: site, css: css, content: content } )
+	html: minify( pug.renderFile( path + filename, { site: site, css: css, content: content } ), {
+		html5: true,
+		minifyCSS: true,
+		minifyJS: true,
+		collapseWhitespace: true,
+		conservativeCollapse: true,
+		processScripts: [ 'application/ld+json' ]
+	} )
 } )
 
-const makeAllPugs = ( pugstrings, css, contents ) => {
-
-	console.log( contents )
-
-	// Run a promise for every content item
-	return Promise.all( contents.map( content => {
-		// For every json declaration, make all pages
-		return pugstrings.map( pug => compilepug( site.system.source, pug.filename, css, content ) )
-	// Flatten the array of arrays to just be an array of promises
-	} ).flat() )
-}
+// Run a promise for every content item
+const makeAllPugs = ( pugstrings, css, contents ) => Promise.all( contents.map( content => {
+	// For every json declaration, make all pages
+	return pugstrings.map( pug => compilepug( site.system.source, pug.filename, css, content ) )
+// Flatten the array of arrays to just be an array of promises
+} ).flat() )
 
 // Write html to disk
 // Use the safe write feature of the psf module

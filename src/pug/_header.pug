@@ -42,7 +42,7 @@ head
 	//- Load the main css stylesheet if there is no js support
 	noscript: link( rel="stylesheet" type="text/css" href=site.system.url + 'assets/css/styles.css' )
 	//- Load the main css stylesheet if there is js support
-	script.
+	script( type="application/javascript" ).
 		let link = document.createElement( "link" )
 		link.href = "#{ site.system.url + 'assets/css/styles.css' }"
 		link.type = "text/css"
