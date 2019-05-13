@@ -78,6 +78,29 @@ The pug files depend on a number of configuration options that can be found in `
 
 In pug this configuration object is passed as ``` const site = require( config.js )```.
 
+## Multiple languages
+
+In the `src/content` folder you can add `.json` files that are used to add parse content into your `.pug` files. Their syntax is:
+
+```json
+{
+    "slug": "/",
+    "lang": "en",
+    "text": {
+        "title": "something",
+        "explanation": "lorem ipsum"
+    }
+}
+```
+
+The `lang` attribute is used on the `html` element to declare the language. The other attributes can be read inside any pug template under the `content` variable, for example:
+
+```pug
+div.thing
+    p#title #{ content.text.title }
+    a( href=content.slug ) home
+```
+
 ## SEO and Social
 
 Every page currently requires you to specify a variable: ```page``` that contains the title and details for the current page. 
