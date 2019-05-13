@@ -1,4 +1,5 @@
 const ip = require( 'ip' )
+const { normalize } = require( 'path' )
 
 module.exports = {
 	// Identity variables used in pug templates
@@ -9,8 +10,8 @@ module.exports = {
 	},
 	// System vars managing some pug elements as well as file paths
 	system: {
-		public: process.env.NODE_ENV == 'production' ? __dirname + '/../docs/' : __dirname + '/../public/',
-		source: __dirname + '/../src/',
+		public: normalize( process.env.NODE_ENV == 'production' ? __dirname + '/../docs/' : __dirname + '/../public/' ),
+		source: normalize( __dirname + '/../src/' ),
 		url: process.env.NODE_ENV == 'production' ? 'https://actuallymentor.github.io/webpack-frontend-only/' : 'http://' + ip.address() + ':3000/',
 		gverification: undefined,
 		timestamp: new Date().getTime(),

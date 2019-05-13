@@ -1,5 +1,5 @@
 const fs = require( 'fs' )
-const pathutil = require('path')
+const { normalize } = require('path')
 const del = require( 'del' )
 const mkdirp = require( 'mkdirp' )
 
@@ -21,7 +21,7 @@ const delp = what => new Promise( ( resolve, reject ) => {
 
 // Make directory if it does not exist yet
 const mkdir = path => {
-	path = pathutil.normalize( path )
+	path = normalize( path )
 	return new Promise( ( resolve, reject ) => {
 		// Check if folder exists
 		fs.access( path, err => {
@@ -35,13 +35,23 @@ const mkdir = path => {
 	} )
 }
 
+// Read the contents of these files and return as an array
+const readdata = ( path, filename ) => new Promise( ( resolve, reject ) => {
+	fs.readFile( normalize( `${path}/${filename}` ), 'utf8', ( err, data ) => {
+		if ( err ) return reject( err )
+		// Resolve with an object that contains the name and data of a file
+		resolve( { filename: filename, data: data } )
+	} )
+} )
+
 // Safely write a file by chacking if the path exists
 const safewrite = ( path, file, content ) => mkdir( path )
-.then( f => writefile( path + file, content ) )
+	.then( f => writefile( path + file, content ) )
 
 module.exports = {
 	write: writefile,
 	swrite: safewrite,
 	del: delp,
-	mkdir: mkdir
+	mkdir: mkdir,
+	readFile: readdata
 }
