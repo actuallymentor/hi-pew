@@ -15,7 +15,7 @@ const file = site => new Promise( ( resolve, reject ) => {
 
 	mkdir( `${site.system.public}assets/css/` ).then( f => { 
 		sass.render( { file: css.from }, ( err, result ) => { 
-			if( err ) reject( err )
+			if( err || !result ) return reject( err )
 			// Run postcss with plugins
 			postcss( [ autoprefixer, cssnano ] )
 			.process( result.css, { from: css.from, to: css.to } )
@@ -29,7 +29,7 @@ const file = site => new Promise( ( resolve, reject ) => {
 const inline = path => new Promise( ( resolve, reject ) => { 
 
 	sass.render( { file: path }, ( err, result ) => { 
-		if( err ) reject( err )
+		if( err || !result ) return reject( err )
 		// Run postcss with plugins
 		postcss( [ autoprefixer, cssnano ] )
 		.process( result.css, { from: path, to: path + 'dummy' } )
