@@ -29,6 +29,6 @@ module.exports = {
 	},
 	// Tracking codes
 	track: {
-		ga: "UA-XXXXXXXX-XX"
+		gtm: undefined
 	}
 }
