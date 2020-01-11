@@ -53,7 +53,7 @@ head
 			document.getElementsByTagName( "head" )[0].appendChild( link )
 		}
 		loadAsync( "#{ site.system.url + 'assets/css/styles.css?t=' + site.system.timestamp }", "text/css" )
-		loadAsync( "https://fonts.googleapis.com/css?family=Roboto:300", "" )
+		loadAsync( "https://fonts.googleapis.com/css?family=Roboto:300&display=swap", "" )
 
 	//- Get the webpack script
 	script( src=site.system.url + `assets/js/app-${site.system.timestamp}.js` , async)
