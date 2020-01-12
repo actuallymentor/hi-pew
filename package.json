@@ -4,7 +4,7 @@
   "description": "Static Webpage with Webpack and Browsersync Boilerplate",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha -r esm",
     "start": "NODE_ENV=development webpack -d --progress --watch",
     "build": "NODE_ENV=production webpack -p --progress"
   },
@@ -42,6 +42,13 @@
     "webpack": "^4.41.5"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "esm": "^3.2.25",
+    "mocha": "^7.0.0",
+    "recursive-readdir": "^2.2.2",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.8",
     "webpack-cli": "^3.3.10"
   }
 }
