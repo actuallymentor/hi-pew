@@ -33,20 +33,23 @@ head
 	meta( name="name=twitter:image:alt" content=page.title )
 	meta( name="twitter:card" content=page.desc )
 
-	//- DNS Prefetching
-	link( rel="dns-prefetch" href="//www.google-analytics.com" )
-	link( rel="dns-prefetch" href="//fonts.googleapis.com.com" )
-
 	//- Load essential css
 	style!=css
 	//- Load the main css stylesheet if there is no js support
-	noscript: link( rel="stylesheet" type="text/css" href=site.system.url + 'assets/css/styles.css' )
+	noscript: link( rel="stylesheet" type="text/css" href=site.system.url + 'assets/css/styles.css?t=' + site.system.timestamp )
+
 	//- Load the main css stylesheet if there is js support
+	//- Async loading of css and fonts
 	script( type="application/javascript" ).
-		let link = document.createElement( "link" )
-		link.href = "#{ site.system.url + 'assets/css/styles.css' }"
-		link.type = "text/css"
-		link.rel = "stylesheet"
-		document.getElementsByTagName( "head" )[0].appendChild( link )
+		const loadAsync = ( url, mime ) => {
+			let link = document.createElement( "link" )
+			link.href = url
+			link.type = mime || ""
+			link.rel = "stylesheet"
+			document.getElementsByTagName( "head" )[0].appendChild( link )
+		}
+		loadAsync( "#{ site.system.url + 'assets/css/styles.css?t=' + site.system.timestamp }", "text/css" )
+		loadAsync( "https://fonts.googleapis.com/css?family=Roboto:300&display=swap", "" )
+
 	//- Get the webpack script
 	script( src=site.system.url + `assets/js/app-${site.system.timestamp}.js` , async)

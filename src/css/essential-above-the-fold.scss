@@ -5,14 +5,19 @@ body {
 	margin: 0;
 	padding: 0;
 	// Set font globally
-	font-family: 'Roboto', sans-serif;
+	font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 	font-weight: 300;
+	font-display: swap;
 	// Sticky the footer
 	display: flex;
 	min-height: 100vh;
 	flex-direction: column;
 	// Backgorund color
 	background: $background-color;
+	// Box sizing
+	* {
+		box-sizing: border-box;
+	}
 }
 
 main {

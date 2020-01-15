@@ -4,7 +4,7 @@
   "description": "Static Webpage with Webpack and Browsersync Boilerplate",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha -r esm",
     "start": "NODE_ENV=development webpack -d --progress --watch",
     "build": "NODE_ENV=production webpack -p --progress"
   },
@@ -19,29 +19,36 @@
   },
   "homepage": "https://github.com/actuallymentor/static-webpage-boilerplate-webpack-browsersync#readme",
   "dependencies": {
-    "@babel/core": "^7.4.4",
-    "@babel/polyfill": "^7.4.4",
-    "@babel/preset-env": "^7.4.4",
-    "autoprefixer": "^9.5.1",
+    "@babel/core": "^7.7.7",
+    "@babel/polyfill": "^7.7.0",
+    "@babel/preset-env": "^7.7.7",
+    "autoprefixer": "^9.7.3",
     "babel-loader": "^8.0.6",
-    "browser-sync": "^2.26.5",
+    "browser-sync": "^2.26.7",
     "browser-sync-webpack-plugin": "^2.2.2",
-    "css-loader": "^2.1.1",
+    "css-loader": "^3.4.2",
     "cssnano": "^4.1.10",
-    "del": "^4.1.1",
-    "dotenv": "^8.0.0",
-    "fsevents": "^2.0.6",
+    "del": "^5.1.0",
+    "dotenv": "^8.2.0",
+    "fsevents": "^2.1.2",
     "html-minifier": "^4.0.0",
     "ip": "^1.1.5",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
-    "node-sass": "^4.12.0",
-    "pug": "^2.0.3",
-    "sass": "^1.20.1",
-    "sitemap": "^2.2.0",
-    "webpack": "^4.31.0"
+    "node-sass": "^4.13.0",
+    "pug": "^2.0.4",
+    "sass": "^1.24.4",
+    "sitemap": "^5.1.0",
+    "webpack": "^4.41.5"
   },
   "devDependencies": {
-    "webpack-cli": "^3.3.2"
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "esm": "^3.2.25",
+    "mocha": "^7.0.0",
+    "recursive-readdir": "^2.2.2",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.8",
+    "webpack-cli": "^3.3.10"
   }
 }
