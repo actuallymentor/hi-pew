@@ -61,14 +61,14 @@ const envconfig = {
 // ///////////////////////////////
 
 if ( process.env.NODE_ENV == 'development' ) fs.watch( site.system.source, { recursive: true }, ( eventType, filename ) => {
-  if ( eventType != 'change' || filename.indexOf( 'pug' ) == -1 ) return
+  if ( eventType != 'change' || !filename.includes( 'pug' ) ) return
   if ( process.env.debug ) console.log( 'It is a pug file' )
   // Delete old build and generate pug files
   return publishpug( site ).then( f => { if ( process.env.debug ) console.log( 'Repeat build done' ); thebs.reload( ) } ).catch( console.log.bind( console ) )
 } )
 
 if ( process.env.NODE_ENV == 'development' ) fs.watch( site.system.source, { recursive: true }, ( eventType, filename ) => {
-  if ( eventType != 'change' || filename.indexOf( 'scss' ) == -1 ) return
+  if ( eventType != 'change' || ( !filename.includes( 'sass' ) && !filename.includes( 'scss' ) ) ) return
   if ( process.env.debug ) console.log( 'It is a css file' )
   // Delete old build and generate pug/css files
     // Delete old build and generate pug/css files
