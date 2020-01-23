@@ -59,7 +59,10 @@ const makeAllPugs = ( pugstrings, css, contents ) => Promise.all( contents.map( 
 
 // Write html to disk
 // Use the safe write feature of the psf module
-const writehtml = ( site, page ) => pfs.swrite( site.system.public + page.baseSlug, `${ page.filename.split( '.' )[ 0 ] }.html`, page.html )
+const writehtml = ( site, page ) => Promise.all( [
+	pfs.swrite( site.system.public + page.baseSlug, `${ page.filename.split( '.' )[ 0 ] }.html`, page.html ),
+	pfs.swrite( site.system.public + page.baseSlug + page.filename.split( '.' )[ 0 ] + '/', `index.html`, page.html )
+] )
 const writeSitemap = ( site, sitemap ) => pfs.swrite( site.system.public, 'sitemap.xml', sitemap.toString() )
 
 // Combine the above two and the parse-pugfiles module to read, compile and write all pug files
