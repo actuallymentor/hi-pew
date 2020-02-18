@@ -27,10 +27,7 @@ const mkdir = path => {
 		fs.access( path, err => {
 			if ( !err ) return resolve( )
 			// Mkdir -p so the path to the folder is created if it doesn't exist
-			mkdirp( path, err => {
-				if ( err ) return reject( )
-				resolve( )
-			} )
+			mkdirp( path ).then( f => resolve() ).catch( err => reject( err ) )
 		} )
 	} )
 }
