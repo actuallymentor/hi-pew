@@ -78,7 +78,7 @@ if ( process.env.NODE_ENV == 'development' ) fs.watch( site.system.source, { rec
 
 // Watch for asset changes
 if ( process.env.NODE_ENV == 'development' ) fs.watch( site.system.source + 'assets/', ( eventType, filename ) => {
-  if ( eventType != 'change') return
+  if ( filename.includes( 'pug' ) || filename.includes( 'sass' ) || filename.includes( 'scss' ) ) return
   if ( process.env.debug ) console.log( 'It is an asset file' )
   // Delete old build and generate pug files
   return publishassets( site ).then( f => { if ( process.env.debug ) console.log( 'Repeat assets done' ); thebs.reload( ) } ).catch( console.log.bind( console ) )

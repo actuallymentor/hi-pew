@@ -71,7 +71,7 @@ const publishfiles = site => pfs.mkdir( site.system.public )
 // Grab the pug data from disk
 .then( f => Promise.all( [
 	pugfiles( site.system.source ),
-	inlinecss( `${ site.system.source }css/essential-above-the-fold.scss` ),
+	inlinecss( `${ site.system.source }css/essential-above-the-fold.sass` ),
 	getContent( `${ site.system.source }content` )
 ] ) )
 // Parse pug into html

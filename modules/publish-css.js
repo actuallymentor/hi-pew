@@ -9,12 +9,16 @@ const cssnano = require( 'cssnano' )
 const file = site => new Promise( ( resolve, reject ) => { 
 
 	const css = { 
-		from: `${site.system.source}css/styles.scss`,
+		from: `${site.system.source}css/styles.sass`,
 		to: `${site.system.public}assets/css/styles.css`
 	 }
 
 	mkdir( `${site.system.public}assets/css/` ).then( f => { 
-		sass.render( { file: css.from }, ( err, result ) => { 
+		sass.render( { 
+			file: css.from,
+			// Add source map if in dev mode
+			...( !( process.env.NODE_ENV == 'production' ) && { sourceMap: true, sourceMapEmbed: true } )
+		 }, ( err, result ) => { 
 			if( err || !result ) return reject( err )
 			// Run postcss with plugins
 			postcss( [ autoprefixer, cssnano ] )
@@ -28,12 +32,17 @@ const file = site => new Promise( ( resolve, reject ) => {
 
 const inline = path => new Promise( ( resolve, reject ) => { 
 
-	sass.render( { file: path }, ( err, result ) => { 
+	sass.render( { 
+		file: path,
+		// Add source map if in dev mode
+		...( !( process.env.NODE_ENV == 'production' ) && { sourceMap: true, sourceMapEmbed: true } )
+	 }, ( err, result ) => { 
 		if( err || !result ) return reject( err )
 		// Run postcss with plugins
 		postcss( [ autoprefixer, cssnano ] )
 		.process( result.css, { from: path, to: path + 'dummy' } )
 		.then( result => resolve( result.css ) )
+		.catch( err => console.log( err ) )
 	 } )
 	
 } )
