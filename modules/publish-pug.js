@@ -4,7 +4,7 @@ const pfs = require( __dirname + '/parse-fs' )
 const pug = require( 'pug' )
 const { inlinecss } = require( './publish-css' )
 const { minify } = require( 'html-minifier' )
-const sm = require( 'sitemap' )
+const { SitemapStream, streamToPromise } = require( 'sitemap' )
 
 const site = require( __dirname + '/config' )
 
@@ -44,11 +44,12 @@ const makeLinks = ( pugfiles, content ) => {
 	return structuredUrls
 }
 // Make sitemap
-const makeSitemap = links => sm.createSitemap( {
-	hostname: site.system.url,
-	cacheTime: 600000,
-	urls: links
-} )
+const makeSitemap = links => {
+	const stream = new SitemapStream( { hostname: site.system.url } )
+	links.map( link => stream.write( link ) )
+	stream.end()
+	return streamToPromise( stream ).then( data => data.toString() )
+}
 
 // Run a promise for every content item
 const makeAllPugs = ( pugstrings, css, contents ) => Promise.all( contents.map( content => {
@@ -84,9 +85,9 @@ const publishfiles = site => pfs.mkdir( site.system.public )
 // .then( debug => { console.log( debug ); return debug } )
 //  Write html files to disk
 // Html ( page ) has .path, .filename .baseSlug and .html
-.then( ( [ htmls, links ] ) => Promise.all( [
+.then( async ( [ htmls, links ] ) => Promise.all( [
 	Promise.all( htmls.map( page => writehtml( site, page ) ) ),
-	writeSitemap( site, makeSitemap( links ) )
+	writeSitemap( site, await makeSitemap( links ) )
 ] ) )
 
 
