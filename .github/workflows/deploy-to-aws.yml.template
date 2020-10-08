@@ -5,10 +5,14 @@ on:
   
   # Trigger on push to master (edge case, local merge)
   push:
-    branches:
+     branches:
       - master
     paths:
+      - '*.json'
+      - '*.js'
       - 'src/**'
+      - 'modules/**'
+      - '.github/workflows/deploy-to-aws.yml'
 
 jobs:
   # Build the frontend giles
