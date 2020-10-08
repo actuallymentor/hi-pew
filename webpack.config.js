@@ -21,6 +21,7 @@ const publishassets = require( __dirname + '/modules/publish-assets' )
 
 // Get environment variables
 require('dotenv').config( `${__dirname}/.env` )
+
 // Remap process env
 const stringify_env = f => {
   let environment = {}
