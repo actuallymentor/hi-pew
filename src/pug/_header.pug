@@ -34,7 +34,7 @@ head
 	meta( name="twitter:card" content=page.desc )
 
 	//- Load essential css
-	style!=css
+	style( type="text/css" charset="utf-8" )!=css
 	//- Load the main css stylesheet if there is no js support
 	noscript: link( rel="stylesheet" type="text/css" href=site.system.url + 'assets/css/styles.css?t=' + site.system.timestamp )
 

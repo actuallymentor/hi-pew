@@ -37,6 +37,7 @@ const servername = 'bsserver'
 const bsconfig = {
   host: 'localhost',
   open: true,
+  cors: true,
   port: 3000,
   server: { 
     baseDir: [ site.system.public ],
