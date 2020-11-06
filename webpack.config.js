@@ -86,37 +86,37 @@ if ( process.env.NODE_ENV == 'development' ) fs.watch( site.system.source + 'ass
   return publishassets( site ).then( f => { if ( process.env.debug ) console.log( 'Repeat assets done' ); thebs.reload( ) } ).catch( console.log.bind( console ) )
 } )
 
-const maps = env => {
-  if( env == 'production' ) {
-    return 'cheap-module-source-map'
-  } else {
-    return 'eval'
-  }
-}
 
 module.exports = ( ) => {
   return Promise.all( [ publishpug( site ), publishassets( site ), css( site ) ] )
   .then( f => {
-    console.log( 'Initial build done' )
-    return {
-      entry: site.system.source + 'js/main.js',
-      output: {
-        filename: `app-${site.system.timestamp}.js`,
-        path: `${site.system.public}assets/js/`
-      },
-      module: {
-        rules: [
-          {
-            test: /\.js$/,
-            exclude: /node_modules/,
-            use: {
-              loader: 'babel-loader'
+
+      console.log( 'Pug, CSS and Assets built.' )
+
+      const webpackConfig = {
+        entry: site.system.source + 'js/main.js',
+        mode: process.env.NODE_ENV,
+        output: {
+          filename: `app-${site.system.timestamp}.js`,
+          path: `${site.system.public}assets/js/`
+        },
+        module: {
+          rules: [
+            {
+              test: /\.js$/,
+              exclude: /node_modules/,
+              use: {
+                loader: 'babel-loader'
+              }
             }
-          }
-        ]
-      },
-      devtool: process.env.NODE_ENV == 'production' ?  'cheap-module-source-map' : 'eval',
-      plugins: process.env.NODE_ENV == 'production' ? [ new webpack.DefinePlugin( envconfig ) ] : [ new BrowserSyncPlugin( bsconfig, bsyncplugconfig ) ]
-    }
+          ]
+        },
+        devtool: false,
+        plugins: process.env.NODE_ENV == 'production' ? [ new webpack.DefinePlugin( envconfig ) ] : [ new BrowserSyncPlugin( bsconfig, bsyncplugconfig ) ]
+      }
+
+    console.log( 'Initial build done: ', webpackConfig )
+    return webpackConfig
+
   } ).catch( console.log.bind( console ) )
 }
