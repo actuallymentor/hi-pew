@@ -20,14 +20,7 @@ const publishpug = require( __dirname + '/modules/publish-pug' )
 const publishassets = require( __dirname + '/modules/publish-assets' )
 
 // Get environment variables
-require('dotenv').config( `${__dirname}/.env` )
-
-// Remap process env
-const stringify_env = f => {
-  let environment = {}
-  Object.keys( process.env ).map( ( key, index ) => { return environment[ key ] = JSON.stringify( process.env[ key ] ) } )
-  return environment
-}
+const dotenv = require('dotenv')
 
 // ///////////////////////////////
 // Plugins
@@ -52,11 +45,14 @@ const bsyncplugconfig = {
   callback: f => { thebs = bs.get( servername ) }
 }
 
-const envconfig = {
-  'process.env': {
-    NODE_ENV: JSON.stringify( 'production' )
+const envPlugin = new webpack.DefinePlugin( {
+  process: {
+    env: {
+      ...JSON.stringify( dotenv.config().parsed ),
+      NODE_ENV: JSON.stringify( process.env.NODE_ENV )
+    }
   }
-}
+} )
 
 // ///////////////////////////////
 // Watchers for non webpack files
@@ -111,8 +107,8 @@ module.exports = ( ) => {
             }
           ]
         },
-        devtool: false,
-        plugins: process.env.NODE_ENV == 'production' ? [ new webpack.DefinePlugin( envconfig ) ] : [ new BrowserSyncPlugin( bsconfig, bsyncplugconfig ) ]
+        devtool: process.env.NODE_ENV == 'production' ? false : 'inline-source-map',
+        plugins: process.env.NODE_ENV == 'production' ? [ envPlugin ] : [ envPlugin, new BrowserSyncPlugin( bsconfig, bsyncplugconfig ) ]
       }
 
     console.log( 'Initial build done: ', webpackConfig )

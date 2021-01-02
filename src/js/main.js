@@ -1,1 +1,3 @@
-console.log( 'I am alive' )
+import { log } from './modules/helpers'
+
+log( 'I am alive' )
