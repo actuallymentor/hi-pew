@@ -46,8 +46,6 @@ jobs:
         env:
           NODE_ENV: production
         run: webpack
-        env:
-          NODE_ENV: 'production'
 
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
