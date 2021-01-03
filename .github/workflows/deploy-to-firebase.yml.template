@@ -45,7 +45,9 @@ jobs:
       - name: Webpack build (production)
         env:
           NODE_ENV: production
-        run: webpack -p
+        run: webpack
+        env:
+          NODE_ENV: 'production'
 
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
