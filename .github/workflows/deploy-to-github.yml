@@ -1,0 +1,54 @@
+name: Build and Deploy website
+
+# Only trigger on push and only for frontend files
+on:
+  
+  # Trigger on push to master (edge case, local merge)
+  push:
+     branches:
+      - master
+    paths:
+      - '*.json'
+      - '*.js'
+      - 'src/**'
+      - 'modules/**'
+      - '.github/workflows/deploy-to-github.yml'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Read .nvmrc
+      run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
+      id: nvm
+      working-directory: frontend
+
+    - name: Set Node.js (.nvmrc)
+      uses: actions/setup-node@v1
+      with:
+        node-version: "${{ steps.nvm.outputs.NVMRC }}"
+
+    - name: install dependencies
+      run: npm i
+
+    - name: Build website files
+      env:
+        NODE_ENV: production
+      run: npm run build
+
+
+    - name: Commit new files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add -f docs/*
+        git commit -am "Automated website commit"
+
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
