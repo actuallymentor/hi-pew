@@ -3,12 +3,10 @@ const BrowserSyncPlugin = require( 'browser-sync-webpack-plugin' )
 const bs = require( 'browser-sync' )
 
 // Webpack and css
-const autoprefixer = require ( 'autoprefixer' )
 const webpack = require( 'webpack' )
 
 // Workflow
-const fs = require( 'fs' )
-const pfs = require( __dirname + '/modules/parse-fs' )
+const { watch } = require( 'fs' )
 const { css } = require( __dirname + '/modules/publish-css' )
 
 
@@ -20,7 +18,15 @@ const publishpug = require( __dirname + '/modules/publish-pug' )
 const publishassets = require( __dirname + '/modules/publish-assets' )
 
 // Get environment variables
-const dotenv = require('dotenv')
+const dotenv = require( 'dotenv' )
+const { NODE_ENV } = process.env
+const dev = NODE_ENV == 'development'
+
+// Helpers
+const error = e => {
+  console.log( "\007" ) // Beep
+  console.error( "\x1b[31m", `\n 🛑 error: `, e && e.message || e, "\x1b[0m" )
+}
 
 // ///////////////////////////////
 // Plugins
@@ -58,61 +64,60 @@ const envPlugin = new webpack.DefinePlugin( {
 // Watchers for non webpack files
 // ///////////////////////////////
 
-if ( process.env.NODE_ENV == 'development' ) fs.watch( site.system.source, { recursive: true }, ( eventType, filename ) => {
-  if ( eventType != 'change' || !filename.includes( 'pug' ) ) return
-  if ( process.env.debug ) console.log( 'It is a pug file' )
-  // Delete old build and generate pug files
-  return publishpug( site ).then( f => { if ( process.env.debug ) console.log( 'Repeat build done' ); thebs.reload( ) } ).catch( console.log.bind( console ) )
+// Watch pug/sass
+if ( dev ) watch( site.system.source, { recursive: true }, async ( eventType, filename ) => {
+
+  // Pug file was updated
+  if( filename.includes( 'pug' ) ) await publishpug( site, filename ).catch( error )
+
+  // Sass file was updated, rebuild sass and pug files
+  else if ( filename.includes( 'sass' ) || filename.includes( 'scss' ) ) {
+    if( filename.includes( 'essential-above-the-fold' ) ) await publishpug( site ).catch( error )
+    await css( site ).catch( error )
+  }
+
+  // Reload browser after every change
+  thebs.reload()
+
+
 } )
 
-if ( process.env.NODE_ENV == 'development' ) fs.watch( site.system.source, { recursive: true }, ( eventType, filename ) => {
-  if ( eventType != 'change' || ( !filename.includes( 'sass' ) && !filename.includes( 'scss' ) ) ) return
-  if ( process.env.debug ) console.log( 'It is a css file' )
-  // Delete old build and generate pug/css files
-    // Delete old build and generate pug/css files
-    return publishpug( site ).then( f => css( site ) ).then( f => { if ( process.env.debug ) console.log( 'Repeat pug build done' ); thebs.reload( ) } ).catch( console.log.bind( console ) )
+// Watch asset folder
+if ( dev ) watch( `${ site.system.source }/assets`, { recursive: true }, async ( eventType, filename ) => {
+
+  // Republish assets
+  await publishassets( site, filename ).catch( error )
+
+  // Reload browser after every change
+  thebs.reload()
+
 
 } )
 
-// Watch for asset changes
-if ( process.env.NODE_ENV == 'development' ) fs.watch( site.system.source + 'assets/', ( eventType, filename ) => {
-  if ( filename.includes( 'pug' ) || filename.includes( 'sass' ) || filename.includes( 'scss' ) ) return
-  if ( process.env.debug ) console.log( 'It is an asset file' )
-  // Delete old build and generate pug files
-  return publishassets( site ).then( f => { if ( process.env.debug ) console.log( 'Repeat assets done' ); thebs.reload( ) } ).catch( console.log.bind( console ) )
-} )
 
+module.exports = async f => {
 
-module.exports = ( ) => {
-  return Promise.all( [ publishpug( site ), publishassets( site ), css( site ) ] )
-  .then( f => {
+  await Promise.all( [ publishpug( site ), publishassets( site ), css( site ) ] )
 
-      console.log( 'Pug, CSS and Assets built.' )
-
-      const webpackConfig = {
-        entry: site.system.source + 'js/main.js',
-        mode: process.env.NODE_ENV,
-        output: {
-          filename: `app-${site.system.timestamp}.js`,
-          path: `${site.system.public}assets/js/`
-        },
-        module: {
-          rules: [
-            {
-              test: /\.js$/,
-              exclude: /node_modules/,
-              use: {
-                loader: 'babel-loader'
-              }
-            }
-          ]
-        },
-        devtool: process.env.NODE_ENV == 'production' ? false : 'inline-source-map',
-        plugins: process.env.NODE_ENV == 'production' ? [ envPlugin ] : [ envPlugin, new BrowserSyncPlugin( bsconfig, bsyncplugconfig ) ]
-      }
-
-    console.log( 'Initial build done: ', webpackConfig )
-    return webpackConfig
-
-  } ).catch( console.log.bind( console ) )
+  return {
+    entry: site.system.source + 'js/main.js',
+    mode: NODE_ENV,
+    output: {
+      filename: `app-${site.system.timestamp}.js`,
+      path: `${site.system.public}assets/js/`
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader'
+          }
+        }
+      ]
+    },
+    devtool: NODE_ENV == 'production' ? false : 'inline-source-map',
+    plugins: NODE_ENV == 'production' ? [ envPlugin ] : [ envPlugin, new BrowserSyncPlugin( bsconfig, bsyncplugconfig ) ]
+  }
 }

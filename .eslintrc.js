@@ -27,9 +27,9 @@ module.exports = {
 
     // What environment to run in
     env:{
-        node: false,
+        node: true,
         browser: true,
-        mocha: false,
+        mocha: true,
         jest: false,
         es6: true
     },

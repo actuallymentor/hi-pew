@@ -13,7 +13,7 @@ const exists = what => fs.access( what ).then( f => true ).catch( f => false )
 const delp = async what => {
 
 	const file = await exists( what )
-	if( file ) return del.sync( [what] )
+	if( file ) return del.sync( [ what ] )
 
 }
 

@@ -4,9 +4,10 @@
   "description": "Static Webpage with Webpack and Browsersync Boilerplate",
   "main": "app.js",
   "scripts": {
+    "nvm": "unset PREFIX && source ~/.nvm/nvm.sh && nvm use && npm i || echo 'No NVM available'",
     "test": "mocha -r esm",
-    "start": "unset PREFIX && source ~/.nvm/nvm.sh && nvm use && NODE_ENV=development webpack --progress --watch",
-    "build": "unset PREFIX && source ~/.nvm/nvm.sh && nvm use && NODE_ENV=production webpack --progress"
+    "start": "npm run nvm && NODE_ENV=development webpack --progress --watch",
+    "build": "npm run nvm && NODE_ENV=production webpack --progress"
   },
   "repository": {
     "type": "git",
@@ -19,43 +20,43 @@
   },
   "homepage": "https://github.com/actuallymentor/static-webpage-boilerplate-webpack-browsersync#readme",
   "dependencies": {
-    "@babel/core": "^7.12.10",
+    "@babel/core": "^7.12.13",
     "@babel/polyfill": "^7.12.1",
-    "@babel/preset-env": "^7.12.11",
-    "autoprefixer": "^10.1.0",
+    "@babel/preset-env": "^7.12.13",
+    "autoprefixer": "^10.2.4",
     "babel-loader": "^8.2.2",
-    "browser-sync": "^2.26.13",
+    "browser-sync": "^2.26.14",
     "browser-sync-webpack-plugin": "^2.3.0",
-    "css-loader": "^5.0.1",
+    "css-loader": "^5.0.2",
     "cssnano": "^4.1.10",
     "del": "^6.0.0",
     "dotenv": "^8.2.0",
-    "fsevents": "^2.2.1",
+    "fsevents": "^2.3.2",
     "html-minifier": "^4.0.0",
     "ip": "^1.1.5",
     "mkdirp": "^1.0.4",
     "ncp": "^2.0.0",
     "node-sass": "^5.0.0",
-    "postcss": "^8.2.2",
+    "postcss": "^8.2.5",
     "pug": "^3.0.0",
-    "sass": "^1.32.0",
+    "sharpie": "^4.5.1",
     "sitemap": "^6.3.5",
-    "webpack": "^5.11.1"
+    "webpack": "^5.21.2"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.12.1",
-    "@babel/plugin-transform-runtime": "^7.12.10",
-    "chai": "^4.2.0",
+    "@babel/eslint-parser": "^7.12.13",
+    "@babel/plugin-transform-runtime": "^7.12.15",
+    "chai": "^4.3.0",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^7.17.0",
+    "eslint": "^7.19.0",
     "esm": "^3.2.25",
     "mocha": "^8.2.1",
     "recursive-readdir": "^2.2.2",
     "request": "^2.88.2",
     "request-promise-native": "^1.0.9",
-    "webpack-cli": "^4.3.1"
+    "webpack-cli": "^4.5.0"
   },
   "optionalDependencies": {
-    "fsevents": "^2.2.1"
+    "fsevents": "^2.3.2"
   }
 }

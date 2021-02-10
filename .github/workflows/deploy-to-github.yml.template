@@ -22,10 +22,15 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
-    - name: installing node 14
+    - name: Read .nvmrc
+      run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
+      id: nvm
+      working-directory: frontend
+
+    - name: Set Node.js (.nvmrc)
       uses: actions/setup-node@v1
       with:
-        node-version: '14.x'
+        node-version: "${{ steps.nvm.outputs.NVMRC }}"
 
     - name: install dependencies
       run: npm i

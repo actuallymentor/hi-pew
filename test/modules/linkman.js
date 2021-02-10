@@ -11,8 +11,8 @@ const get = async link => {
 		uri: link.url,
 		resolveWithFullResponse: true,
 		headers: {
-	        'User-Agent': 'Chrome/79.0.3945.117'
-	    }
+			'User-Agent': 'Chrome/79.0.3945.117'
+		}
 	} )
 
 	// If it has no protocol
@@ -23,8 +23,8 @@ const get = async link => {
 		uri: `https:${ link.url }`,
 		resolveWithFullResponse: true,
 		headers: {
-	        'User-Agent': 'Chrome/79.0.3945.117'
-	    }
+			'User-Agent': 'Chrome/79.0.3945.117'
+		}
 	} ).catch( e => false )
 	if( https ) return https
 
@@ -35,8 +35,8 @@ const get = async link => {
 		uri: `http:${ link.url }`,
 		resolveWithFullResponse: true,
 		headers: {
-	        'User-Agent': 'Chrome/79.0.3945.117'
-	    }
+			'User-Agent': 'Chrome/79.0.3945.117'
+		}
 	} ).catch( e => false )
 	if( http ) return http
 

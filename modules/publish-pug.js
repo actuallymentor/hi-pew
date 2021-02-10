@@ -1,4 +1,4 @@
-const pugfiles = require( __dirname + '/parse-pugfiles' )
+const getAllPugfiles = require( __dirname + '/parse-pugfiles' )
 const getContent = require( __dirname + '/parse-locales' )
 const pfs = require( __dirname + '/parse-fs' )
 const pug = require( 'pug' )
@@ -68,27 +68,33 @@ const writeSitemap = ( site, sitemap ) => pfs.swrite( site.system.public, 'sitem
 
 // Combine the above two and the parse-pugfiles module to read, compile and write all pug files
 // Make the public directory
-const publishfiles = site => pfs.mkdir( site.system.public )
-// Grab the pug data from disk
-.then( f => Promise.all( [
-	pugfiles( site.system.source ),
-	inlinecss( `${ site.system.source }css/essential-above-the-fold.sass` ),
-	getContent( `${ site.system.source }content` )
-] ) )
-// Parse pug into html
-// Pugfiles have .filename and .data
-// Generate essential css to be inlined into the pug files
-.then( ( [ pugfiles, css, content ] ) => Promise.all( [
-	makeAllPugs( pugfiles, css, content ),
-	makeLinks( pugfiles, content )
-] ) )
-// .then( debug => { console.log( debug ); return debug } )
-//  Write html files to disk
-// Html ( page ) has .path, .filename .baseSlug and .html
-.then( async ( [ htmls, links ] ) => Promise.all( [
-	Promise.all( htmls.map( page => writehtml( site, page ) ) ),
-	writeSitemap( site, await makeSitemap( links ) )
-] ) )
+const publishfiles = async ( site, filter ) => {
 
+	await pfs.mkdir( site.system.public )
+
+	// Grab the pug data from disk
+	const [ pugfiles, css, content ] = await Promise.all( [
+		getAllPugfiles( site.system.source ),
+		inlinecss( `${ site.system.source }css/essential-above-the-fold.sass` ),
+		getContent( `${ site.system.source }content` )
+	] )
+
+	// Parse pug into html
+	// Pugfiles have .filename and .data
+	// If fitler applied, only build pug htmls but include all links into the links for sitemap
+	const filteredPugfiles = filter ? pugfiles.filter( ( { filename } ) => filename.includes( filter ) ) : pugfiles
+	const [ htmls, links ] = await Promise.all( [
+		makeAllPugs( filteredPugfiles, css, content ),
+		makeLinks( pugfiles, content )
+	] )
+
+	//  Write html files to disk
+	// Html ( page ) has .path, .filename .baseSlug and .html
+	return Promise.all( [
+		Promise.all( htmls.map( page => writehtml( site, page ) ) ),
+		writeSitemap( site, await makeSitemap( links ) )
+	] )
+
+}
 
 module.exports = publishfiles

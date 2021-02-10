@@ -15,7 +15,12 @@ module.exports = {
 		url: process.env.NODE_ENV == 'production' ? 'https://actuallymentor.github.io/webpack-frontend-only/' : 'http://' + ip.address() + ':3000/',
 		gverification: undefined,
 		timestamp: new Date().getTime(),
-		year: new Date().getFullYear()
+		year: new Date().getFullYear(),
+		images: {
+			defaultCompression: 80,
+			sizes: [ 120, 480, 720, 1080, 2160, 3840 ],
+			extensions:  [ 'jpg', 'png', 'jpeg', 'webp' ]
+		}
 	},
 	// About the author. Change this to your own unless you went me to get credit for your page of course... <3
 	author: {

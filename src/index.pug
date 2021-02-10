@@ -1,4 +1,21 @@
-- const page = { title: 'Home', desc: 'Home page', published: '2017-01-01', url: '/', featuredimg: '/image.jpg' }
+//- --------------------------------
+//- HiPew settings
+//- --------------------------------
+
+//- This is pace-specific metadata
+-
+	const page = {
+		title: 'Home', desc: 'Home page', url: '/',
+		published: '2017-01-01', featuredimg: '/image.jpg'
+	}
+//- This is a file with helpers
+include pug/_helpers.pug
+
+
+//- --------------------------------
+//- Webpage source code
+//- --------------------------------
+
 doctype html
 html( lang=content.lang )
 	include pug/_header.pug
@@ -6,4 +23,6 @@ html( lang=content.lang )
 		main
 			h1 Hello sir
 			h2 How are you
+			+rimg.testing.another( src='/assets/page-speed.png' )
+
 		include pug/_footer.pug

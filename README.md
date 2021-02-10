@@ -1,47 +1,34 @@
-# Webpack 4, frontend only
+# 👋 🔫 HI PEW - HI<span style="opacity: 0.7">gh</span> PE<span style="opacity: 0.7">rformance</span> W<span style="opacity: 0.7">ebsite</span>
 
 <img height="50px" style="float: left;" alt="webpack" src="http://i.imgur.com/xz36f45.png" /> <img height="50px" style="float: left;" alt="browsersync" src="http://i.imgur.com/L5peje9.png" /> <img height="50px" style="float: left;" alt="pug" src="http://i.imgur.com/x4sHEg4.png" /> <img height="50px" style="float: left;" alt="sass" src="http://i.imgur.com/O9ikKdz.png" />
 
-This repo sets up a development environment where you can happily edit your .pug, .scss and .js files while your development server automatically updates when you save.
-
-The main optimisations are a high page speed score and built-in SEO structure. The only reason the page scored 99/100 page speed is because Google Analytics doesn't leverage browser caching sufficiently.
-
-![Page speed]( ./src/assets/page-speed.png )
-
-[Live Demo of a webpage built with this module]( https://actuallymentor.github.io/webpack-frontend-only/ )
-
-Workflow:
-
-1. Make html structure using [ pug ]( https://github.com/pugjs )
-2. Write styling in [ Sass ]( https://github.com/sass/sass )
-    1. The `essential-above-the-fold.scss` is embedded into the header as a minified `<style>` element
-    1. The `styles.scss` is loaded with javascript
-3. Write js in ES2015 compiled by [ Webpack ]( https://github.com/webpack )
-4. Have an auto-refreshing browser preview using [ Browsersync ]( https://github.com/BrowserSync/browser-sync )
+A static website generator that implements best practices for page speed. [ pug ]( https://github.com/pugjs ), Write styling in [ Sass ]( https://github.com/sass/sass ) and Javascript go in, deployment-ready minified, prefixed and compressed build files come out.
 
 ## Getting started
 
+Dependencies:
+
+- [node.js]( https://nodejs.org/en/ )
+- [nvm]( https://github.com/nvm-sh/nvm ) ( optional, recommended )
+
 Basic usage:
 
-```shell
-git clone https://github.com/actuallymentor/webpack-frontend-only.git
-npm install
-npm start # This will open the preview on your browser
-```
+1. Clone this repository
+2. Run `npm start`
+3. Edit the files in `src/`
+4. Configure global website settings in `modules/config.js`
 
-To make the final build version:
+To create a production build in `docs/`:
 
 ```shell
 npm run build
 ```
 
-Note that the ``` assets/``` folder is copied from the source to public directory.
-
 ## Configuration
 
-By default the folder containing the source files is ``` src/``` and the folder containing the compiled website is ``` public/``` in development mode and ```docs/``` in production mode.
+By default the folder containing the source files is `src/` and the folder containing the compiled website is ` public/` in development mode and `docs/` in production mode.
 
-The pug files depend on a number of configuration options that can be found in ``` modules/config.js```:
+The pug files depend on a number of configuration options that can be found in ` modules/config.js`:
 
 ```js
 {
@@ -71,14 +58,14 @@ The pug files depend on a number of configuration options that can be found in `
     },
     // Tracking codes
     track: {
-        ga: "UA-XXXXXXXX-XX"
+        gtm: "UA-XXXXXXXX-XX" // Google Tag Manager
     }
 }
 ```
 
-In pug this configuration object is passed as ``` const site = require( config.js )```.
+In pug this configuration object is passed as `const site = require( 'modules/config.js' )`.
 
-## Multiple languages
+### Multiple languages
 
 In the `src/content` folder you can add `.json` files that are used to add parse content into your `.pug` files. Their syntax is:
 
@@ -101,7 +88,7 @@ div.thing
     a( href=content.slug ) home
 ```
 
-## SEO and Social
+### SEO and Social
 
 Every page currently requires you to specify a variable: ```page``` that contains the title and details for the current page. 
 

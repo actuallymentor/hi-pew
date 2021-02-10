@@ -1,0 +1,25 @@
+//- Responsive image tag
+mixin rimg(  )
+	picture.rimg( class!=attributes.class )
+
+		//- Shared definitions
+		-
+			const [ full, path, filename, dot, extension ] = attributes.src.match( /(.*\/)(.*)(\.)(.*)/ )
+			const sizes = site.system.images.sizes.reduce( ( acc, size ) => {
+				return acc += `( max-width: ${ size }px ) ${ size }px, `
+			},'' )
+
+		//- Img tag for jpg
+		-
+			const srcset = site.system.images.sizes.reduce( ( acc, size ) => {
+				return acc += `${ path }${ filename }-${ size }.jpg ${ size }w, `
+			},'' )
+			
+		img( src=attributes.src srcset=srcset sizes=sizes alt=attributes.alt )
+
+		//- Source tag for webp
+		-
+			const webpsrcset = site.system.images.sizes.reduce( ( acc, size ) => {
+				return acc += `${ path }${ filename }-${ size }.webp ${ size }w, `
+			},'' )
+		source( type="image/webp" srcset=webpsrcset )
