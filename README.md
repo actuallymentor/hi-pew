@@ -1,4 +1,4 @@
-# 👋 🔫 HI PEW - HI<span style="opacity: 0.7">gh</span> PE<span style="opacity: 0.7">rformance</span> W<span style="opacity: 0.7">ebsite</span>
+# 👋 🔫 HI PEW - High Performance Website Boilerplate
 
 <img height="50px" style="float: left;" alt="webpack" src="http://i.imgur.com/xz36f45.png" /> <img height="50px" style="float: left;" alt="browsersync" src="http://i.imgur.com/L5peje9.png" /> <img height="50px" style="float: left;" alt="pug" src="http://i.imgur.com/x4sHEg4.png" /> <img height="50px" style="float: left;" alt="sass" src="http://i.imgur.com/O9ikKdz.png" />
 

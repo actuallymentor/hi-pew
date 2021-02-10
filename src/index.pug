@@ -19,10 +19,10 @@ include pug/_helpers.pug
 doctype html
 html( lang=content.lang )
 	include pug/_header.pug
-	body
+	body#index
+		+rimg.stretch( src='/assets/robert-katzki-jbtfM0XBeRc-unsplash.jpg' )
 		main
-			h1 Hello sir
-			h2 How are you
-			+rimg.testing.another( src='/assets/page-speed.png' )
+			h1 👋 🔫 HI PEW
+			h2 High Performance Website Boilerplate
 
 		include pug/_footer.pug

@@ -23,6 +23,8 @@ const stream = ( readstream, writepath, transform ) => new Promise( ( resolve, r
 
 const compressOneImageToMany = async ( site, filename ) => {
 
+	if( !filename ) return 'This was a deletion'
+
 	try {
 
 		if( process.env.debug ) console.log( 'Compressing ', `${ site.system.source }assets/${ filename }` )
