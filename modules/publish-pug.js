@@ -75,7 +75,7 @@ const publishfiles = async ( site, filter ) => {
 	// Grab the pug data from disk
 	const [ pugfiles, css, content ] = await Promise.all( [
 		getAllPugfiles( site.system.source ),
-		inlinecss( `${ site.system.source }css/essential-above-the-fold.sass` ),
+		inlinecss( site, `${ site.system.source }css/essential-above-the-fold.sass` ),
 		getContent( `${ site.system.source }content` )
 	] )
 

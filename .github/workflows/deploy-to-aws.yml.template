@@ -41,7 +41,9 @@ jobs:
       - name: Check if all links work
         run: npm test
 
-      - name: Webpack build (production)
+      - name: Build website files
+        env:
+          NODE_ENV: production
         run: npm run build
 
       - name: Deploy to S3

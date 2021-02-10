@@ -34,6 +34,9 @@ jobs:
     - name: install dependencies
       run: npm i
 
+    - name: test if all links work
+      run: npm test
+
     - name: Build website files
       env:
         NODE_ENV: production

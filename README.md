@@ -2,13 +2,16 @@
 
 <img height="50px" style="float: left;" alt="webpack" src="http://i.imgur.com/xz36f45.png" /> <img height="50px" style="float: left;" alt="browsersync" src="http://i.imgur.com/L5peje9.png" /> <img height="50px" style="float: left;" alt="pug" src="http://i.imgur.com/x4sHEg4.png" /> <img height="50px" style="float: left;" alt="sass" src="http://i.imgur.com/O9ikKdz.png" />
 
-A static website generator that implements best practices for page speed. [ pug ]( https://github.com/pugjs ), Write styling in [ Sass ]( https://github.com/sass/sass ) and Javascript go in, deployment-ready minified, prefixed and compressed build files come out.
+A static website generator that implements best practices for page speed.
+
+- input: Markup in [ pug ]( https://github.com/pugjs ), styling in [ Sass ]( https://github.com/sass/sass ) and Javascript with [ Babel ]( https://babeljs.io/ )
+- output: deployment-ready minified, prefixed and compressed build files
 
 Benefits:
 
-- [Over 95% Google Page Speed Score]( https://actuallymentor.github.io/webpack-frontend-only/ )
+- [Over 100% Google Page Speed Score]( https://developers.google.com/speed/pagespeed/insights/?url=https://actuallymentor.github.io/hi-pew/ )
 - Use `pug`, `sass` and the newest `js` with zero setup time
-- SEO best practiced auto-implemented
+- SEO best practices auto-implemented
 
 ## Getting started
 
@@ -38,28 +41,39 @@ npm run build
 2. Separate your CSS for meaningful-paint optimisation
     - Use `src/css/essential-above-the-fold.sass` for essential above the fold styles
     - Use `src/css/styles.sass` for below the fold styles
-3. Enable auto-deployment
+3. Set per-page SEO settings
+    - Every `.pug` file may contain it's own metadata and sharing image
+4. Confgure deeper browser compatibility
+    - Javascript backwards compatibility in `.babelrc`
+    - CSS compatibility in `modules/config.js` at `browsers`
+4. Enable auto-deployment
     - Templates for Github pages, Firebase and AWS are available in `.github/workflows`
 
 ### Multiple languages
 
-In the `src/content` folder you can add `.json` files that are used to add parse content into your `.pug` files. Their syntax is:
+Every `.json` or `.js` file in `src/content` will result in a duplicate of your website using the content in that file.
 
-```json
-{
-    "slug": "/",
-    "lang": "en",
-    "text": {
+```js
+module.exports = {
+    slug: "/", // The relative URL of this language
+    lang: "en", // The language code of this language (use W3 compliant codes)
+
+    // You can creat any keys and access them
+    hero: {
         "title": "something",
         "explanation": "lorem ipsum"
-    }
+    },
+    usps: [ "It's good", "It's free" ]
 }
 ```
 
-The `lang` attribute is used on the `html` element to declare the language. The other attributes can be read inside any pug template under the `content` variable, for example:
+The attributes can be read inside any pug template under the `content` variable, for example:
 
 ```pug
-div.thing
-    p#title #{ content.text.title }
+div.hero
+    p#title #{ content.hero.title }
     a( href=content.slug ) home
+div.usp
+    each usp in content.usps
+        p= usp
 ```

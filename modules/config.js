@@ -28,6 +28,16 @@ module.exports = {
 		timestamp: new Date().getTime(),
 		year: new Date().getFullYear(),
 
+		// Browser compatibility warnings
+		browser: {
+			support: {
+				browsers: [ 'last 2 versions', 'not dead' ],
+
+				// Format your own based on: https://github.com/browserslist/browserslist
+				// browsers: [ '>1%' ]
+			}
+		},
+
 		// Image  compression settings, these defaults are fine for many people
 		images: {
 			defaultCompression: 80, // Default jpeg compression
