@@ -5,8 +5,8 @@ head
 	base( href=site.system.url )
 	meta( name="robots" content="index,follow,noodp" )
 	meta( name="googlebot" content="index,follow" )
-	if site.system.gverification
-		meta( name="google-site-verification" content=site.system.gverification )
+	if site.track.gverification
+		meta( name="google-site-verification" content=site.track.gverification )
 
 	//- Regular meta tags
 	title !{site.identity.title} - #{page.title}
@@ -49,7 +49,7 @@ head
 			document.getElementsByTagName( "head" )[0].appendChild( link )
 		}
 		loadAsync( "#{ site.system.url + 'assets/css/styles.css?t=' + site.system.timestamp }", "text/css" )
-		loadAsync( "https://fonts.googleapis.com/css?family=Roboto:300&display=swap", "" )
+		// loadAsync( "https://fonts.googleapis.com/css?family=Roboto:300&display=swap", "" )
 
 	//- Get the webpack script
 	script( src=site.system.url + `assets/js/app-${site.system.timestamp}.js` , async)

@@ -2,27 +2,45 @@ const ip = require( 'ip' )
 const { normalize } = require( 'path' )
 
 module.exports = {
+
+	// ///////////////////////////////
 	// Identity variables used in pug templates
+	// Relevant for SEO
+	// ⚠️ You should edit this section
+	// ///////////////////////////////
 	identity: {
 		title: "Website",
 		desc: "Description of website",
 		"logo": "logo.jpg"
 	},
+	
+
+	// ///////////////////////////////
 	// System vars managing some pug elements as well as file paths
+	// ///////////////////////////////
 	system: {
+
+		// // ⚠️ You should edit the 'url' key to be the production URL
+		url: process.env.NODE_ENV == 'production' ? 'https://actuallymentor.github.io/hi-pew/' : 'http://' + ip.address() + ':3000/',
+
 		public: normalize( process.env.NODE_ENV == 'production' ? __dirname + '/../docs/' : __dirname + '/../public/' ),
 		source: normalize( __dirname + '/../src/' ),
-		url: process.env.NODE_ENV == 'production' ? 'https://actuallymentor.github.io/webpack-frontend-only/' : 'http://' + ip.address() + ':3000/',
-		gverification: undefined,
 		timestamp: new Date().getTime(),
 		year: new Date().getFullYear(),
+
+		// Image  compression settings, these defaults are fine for many people
 		images: {
-			defaultCompression: 80,
-			sizes: [ 120, 480, 720, 1080, 2160, 3840 ],
-			extensions:  [ 'jpg', 'png', 'jpeg', 'webp' ]
+			defaultCompression: 80, // Default jpeg compression
+			sizes: [ 120, 480, 720, 1080, 2160, 3840 ], // Image sizes to generate
+			extensions:  [ 'jpg', 'png', 'jpeg', 'webp' ] // Image file extensions to compress and transform
 		}
+
 	},
-	// About the author. Change this to your own unless you went me to get credit for your page of course... <3
+	
+	// ///////////////////////////////
+	// About the author. Change this to your own
+	// ⚠️ You should edit this section
+	// ///////////////////////////////
 	author: {
 		firstname: "Mentor",
 		lastname: "Palokaj",
@@ -32,8 +50,14 @@ module.exports = {
 		facebook: "1299359953416544",
 		url: "https://www.skillcollector.com/"
 	},
+
+	// ///////////////////////////////
 	// Tracking codes
+	// ⚠️ You should edit this section
+	// ///////////////////////////////
 	track: {
-		gtm: undefined
+		gverification: undefined, // Google webmaster verification code
+		gtm: undefined // Google tag manager code
 	}
+	
 }
