@@ -9,7 +9,7 @@ A static website generator that implements best practices for page speed.
 
 Benefits:
 
-- [Over 100% Google Page Speed Score]( https://developers.google.com/speed/pagespeed/insights/?url=https://actuallymentor.github.io/hi-pew/ )
+- [100% Google Page Speed Score]( https://developers.google.com/speed/pagespeed/insights/?url=https://actuallymentor.github.io/hi-pew/ )
 - Use `pug`, `sass` and the newest `js` with zero setup time
 - SEO best practices auto-implemented
 
