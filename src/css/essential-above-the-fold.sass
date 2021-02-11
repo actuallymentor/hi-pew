@@ -25,7 +25,7 @@ main
 	// Vertically align content
 	display: flex
 	align-items: center
-	justify-content: center
+	justify-content: flex-start
 	flex-direction: column
 
 
@@ -40,15 +40,53 @@ main
 // Index page
 // ///////////////////////////////
 #index
-	
-	h1, h2, a
-		background: rgba( 0,0,0,.5 )
-		color: white
+
+	section
+		position: relative
+		display: flex
+		flex-direction: column
+		align-items: center
+		justify-content: center
+		width: 100%
+		min-height: 300px
 		padding: 1rem
 
-	.stretch *
+	.stretch
 		position: absolute
 		z-index: -1
-		height: 100%
-		min-width: 100%
+		overflow: hidden
+		width: 100%
+		min-height: 100%
 
+	#hero
+
+		padding: 2rem 1rem
+		width: 100%
+		min-height: 500px
+	
+		h1, h2, a
+			background: rgba( 0,0,0,.5 )
+			color: white
+			padding: 1rem
+			text-align: center
+
+	#usps
+		flex-direction: row
+		.usp
+			width: 300px
+			max-width: 100%
+			padding: 1rem
+			text-align: center
+			p
+				&:first-child
+					font-size: 4rem
+					margin: 0
+				&:nth-child( 2 )
+					font-size: 1.2rem
+
+	#cta
+		a
+			background: black
+			color: white
+			padding: 1rem
+			text-decoration: none

@@ -20,10 +20,24 @@ doctype html
 html( lang=content.lang )
 	include pug/_header.pug
 	body#index
-		+rimg.stretch( src=site.system.url+'/assets/robert-katzki-jbtfM0XBeRc-unsplash.jpg' )
+		
 		main
-			h1 👋 🔫 HI PEW
-			h2 High Performance Website Boilerplate
-			a( target='_blank' href='https://developers.google.com/speed/pagespeed/insights/?url=https://actuallymentor.github.io/hi-pew/' ) View Pagespeed Score
+			section#hero
+				h1 👋 🔫 HI PEW
+				h2 High Performance Website Boilerplate
+				a( target='_blank' href='https://developers.google.com/speed/pagespeed/insights/?url=https://actuallymentor.github.io/hi-pew/' ) View Pagespeed Score
+				+rimg.stretch( src=site.system.url+'/assets/robert-katzki-jbtfM0XBeRc-unsplash.jpg' )
+			section#usps
+					div.usp
+						p 🚀
+						p 100% Google Pagespeed score
+					div.usp
+						p 👓
+						p Easy to configure SEO
+					div.usp
+						p 🧪
+						p Advanced configuration options for geeks
+			section#cta
+				a( href='https://github.com/actuallymentor/hi-pew/' ) 👨‍💻 View README on Github
 
 		include pug/_footer.pug

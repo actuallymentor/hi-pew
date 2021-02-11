@@ -1,5 +1,5 @@
 //- Responsive image tag
-mixin rimg(  )
+mixin rimg( )
 	picture.rimg( class!=attributes.class )
 
 		//- Shared definitions
@@ -15,11 +15,11 @@ mixin rimg(  )
 				return acc += `${ path }${ filename }-${ size }.jpg ${ size }w, `
 			},'' )
 			
-		img( src=attributes.src srcset=srcset sizes=sizes alt=attributes.alt )
+		img( src=attributes.src srcset=srcset sizes=sizes alt=attributes.alt class!=attributes.class )
 
 		//- Source tag for webp
 		-
 			const webpsrcset = site.system.images.sizes.reduce( ( acc, size ) => {
 				return acc += `${ path }${ filename }-${ size }.webp ${ size }w, `
 			},'' )
-		source( type="image/webp" srcset=webpsrcset )
+		source( type="image/webp" srcset=webpsrcset class!=attributes.class )
