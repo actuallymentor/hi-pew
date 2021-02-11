@@ -9,8 +9,8 @@ module.exports = {
 	// ⚠️ You should edit this section
 	// ///////////////////////////////
 	identity: {
-		title: "Website",
-		desc: "Description of website",
+		title: "Hi Pew",
+		desc: "High Performance Website Boilerplate",
 		"logo": "logo.jpg"
 	},
 	

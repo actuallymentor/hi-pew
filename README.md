@@ -4,14 +4,16 @@
 
 A static website generator that implements best practices for page speed. [ Click here for a live demo ]( https://actuallymentor.github.io/hi-pew/ ).
 
-- input: Markup in [ pug ]( https://github.com/pugjs ), styling in [ Sass ]( https://github.com/sass/sass ) and Javascript with [ Babel ]( https://babeljs.io/ )
+- input: Markup in [pug]( https://github.com/pugjs ), styling in [Sass]( https://github.com/sass/sass ) and Javascript with [Babel]( https://babeljs.io/ )
 - output: deployment-ready minified, prefixed and compressed build files
 
 Benefits:
 
-- 100% Google Page Speed Score ([ view score ]( https://developers.google.com/speed/pagespeed/insights/?url=https://actuallymentor.github.io/hi-pew/ ))
-- Use `pug`, `sass` and the newest `js` with zero setup time
-- SEO best practices auto-implemented
+- 🚀 100% Google Page Speed Score ([view score]( https://developers.google.com/speed/pagespeed/insights/?url=https://actuallymentor.github.io/hi-pew/ ))
+- 👩‍💻 Use `pug`, `sass` and the newest `js` with zero setup time
+- 👓 SEO best practices auto-implemented
+- 🇪🇺 Built-in multilanguage support
+- 🧪 Advanced performance options and compatibility warnings
 
 ## Getting started
 
