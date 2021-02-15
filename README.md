@@ -39,7 +39,7 @@ npm run build
 ### Advanced usage
 
 1. Customise auto-image compression
-    - Edit the `system.images` key to include your compression preferences
+    - Edit the `system.images` key to include your compression preferences for `jpeg`, `webp` and `avif`
     - Use the `rimg` mixin found in `src/pug/_helpers`
 2. Separate your CSS for meaningful-paint optimisation
     - Use `src/css/essential-above-the-fold.sass` for essential above the fold styles
@@ -47,6 +47,7 @@ npm run build
 3. Set per-page SEO settings
     - Every `.pug` file may contain it's own metadata and sharing image
 4. Confgure deeper browser compatibility
+    - By default `npm start` runs a `caniuse` compatibility check on your SASS
     - Javascript backwards compatibility in `.babelrc`
     - CSS compatibility in `modules/config.js` at `browsers`
 4. Enable auto-deployment

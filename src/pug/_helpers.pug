@@ -9,12 +9,25 @@ mixin rimg( )
 				return acc += `( max-width: ${ size }px ) ${ size }px, `
 			},'' )
 
+		
+
+		//- Source tag for avif
+		-
+			const avifsrcset = site.system.images.sizes.reduce( ( acc, size ) => {
+				return acc += `${ path }${ filename }-${ size }.avif ${ size }w, `
+			},'' )
+		source( type="image/avif" srcset=avifsrcset class!=attributes.class )
+
+		
+
 		//- Source tag for webp
 		-
 			const webpsrcset = site.system.images.sizes.reduce( ( acc, size ) => {
 				return acc += `${ path }${ filename }-${ size }.webp ${ size }w, `
 			},'' )
 		source( type="image/webp" srcset=webpsrcset class!=attributes.class )
+		
+
 		
 
 		//- Img tag for jpg

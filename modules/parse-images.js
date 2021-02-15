@@ -54,6 +54,12 @@ const compressOneImageToMany = async ( site, filename ) => {
 			extension: 'webp'
 		} ) )
 
+		const avifConversionStreams = sizes.map( size => ( {
+			convertor: sharp().resize( selectMaxSize( size ), undefined ).avif( { quality: defaultQuality } ),
+			size: size,
+			extension: 'avif'
+		} ) )
+
 		// Read stream of the image
 		const imageStream = fs.createReadStream( filePath )
 
@@ -64,7 +70,7 @@ const compressOneImageToMany = async ( site, filename ) => {
 		// Create streams for all the transforms
 		const [ fm, ext ] = ( filename && filename.match( /(?:.*)(?:\.)(.*)/ )  ) || []
 		const fileNameWithoutExt = path.basename( filename, `.${ ext }` )
-		await Promise.all( [ ...jpegConversionStreams, ...webpConversionStreams ].map( ( { convertor, size, extension } ) => {
+		await Promise.all( [ ...jpegConversionStreams, ...webpConversionStreams, ...avifConversionStreams ].map( ( { convertor, size, extension } ) => {
 			return stream( imageStream, `${ site.system.public }/assets/${ fileNameWithoutExt }-${ size }.${ extension }`, convertor )
 		} ) )
 
