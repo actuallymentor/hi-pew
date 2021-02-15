@@ -13,6 +13,7 @@ Benefits:
 - 👩‍💻 Use `pug`, `sass` and the newest `js` with zero setup time
 - 👓 SEO best practices auto-implemented
 - 🇪🇺 Built-in multilanguage support
+- 🌐 Built-in broken link checker through `npm test`
 - 🧪 Advanced performance options and compatibility warnings
 
 ## Getting started
