@@ -41,7 +41,7 @@ module.exports = {
 		// Image  compression settings, these defaults are fine for many people
 		images: {
 			defaultCompression: 80, // Default jpeg compression
-			sizes: [ 120, 480, 720, 1080, 2160, 3840 ], // Image sizes to generate
+			sizes: [ 240, 480, 720, 1080, 2160, 3840 ], // Image sizes to generate
 			extensions:  [ 'jpg', 'png', 'jpeg', 'webp' ] // Image file extensions to compress and transform
 		}
 

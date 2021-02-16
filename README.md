@@ -40,7 +40,8 @@ npm run build
 
 1. Customise auto-image compression
     - Edit the `system.images` key to include your compression preferences for `jpeg`, `webp` and `avif`
-    - Use the `rimg` mixin found in `src/pug/_helpers`
+    - Use the `rimg` (responsive img) mixin found in `src/pug/_helpers`
+    - Use the `cimg` (compressed img) mixin found in `src/pug/_helpers`
 2. Separate your CSS for meaningful-paint optimisation
     - Use `src/css/essential-above-the-fold.sass` for essential above the fold styles
     - Use `src/css/styles.sass` for below the fold styles

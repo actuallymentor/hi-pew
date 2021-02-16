@@ -55,8 +55,13 @@ main
 		position: absolute
 		z-index: -1
 		overflow: hidden
-		width: 100%
+		min-width: 100%
 		min-height: 100%
+	.circle
+		border-radius: 50%
+		height: 100%
+		width: 100%
+		margin-bottom: 3rem
 
 	#hero
 
@@ -66,7 +71,7 @@ main
 		max-height: 90vh
 	
 		h1, h2, a
-			background: rgba( 0,0,0,.5 )
+			background: rgba( 0,0,0,.9 )
 			color: white
 			padding: 1rem
 			text-align: center
@@ -87,6 +92,9 @@ main
 					font-size: 1.2rem
 
 	#cta
+		#compressed
+			height: 100px
+			width: 100px
 		a
 			background: black
 			color: white

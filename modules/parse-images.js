@@ -27,11 +27,11 @@ const compressOneImageToMany = async ( site, filename ) => {
 
 	try {
 
-		if( process.env.debug ) console.log( 'Compressing ', `${ site.system.source }assets/${ filename }` )
-
 		// System settings
 		const { system: { images } } = site
-		const { sizes, defaultQuality } = images
+		const { sizes=[], defaultQuality } = images
+
+		console.log( `⏱ Compressing ${ sizes.length * 3 } forms of `, `${ site.system.source }assets/${ filename }` )
 
 		// Image metadata
 		const filePath = `${ site.system.source }/assets/${ filename }`
@@ -70,9 +70,12 @@ const compressOneImageToMany = async ( site, filename ) => {
 		// Create streams for all the transforms
 		const [ fm, ext ] = ( filename && filename.match( /(?:.*)(?:\.)(.*)/ )  ) || []
 		const fileNameWithoutExt = path.basename( filename, `.${ ext }` )
+
 		await Promise.all( [ ...jpegConversionStreams, ...webpConversionStreams, ...avifConversionStreams ].map( ( { convertor, size, extension } ) => {
 			return stream( imageStream, `${ site.system.public }/assets/${ fileNameWithoutExt }-${ size }.${ extension }`, convertor )
 		} ) )
+
+		console.log( '✅ Compression of ', `${ site.system.source }assets/${ filename }`, 'complete' )
 
 	} catch( e ) {
 		console.log( `Error compressing image: `, e )

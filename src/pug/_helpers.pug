@@ -2,6 +2,8 @@
 mixin rimg( )
 	picture.rimg( class!=attributes.class )
 
+
+
 		//- Shared definitions
 		-
 			const [ full, path, filename, dot, extension ] = attributes.src.match( /(.*\/)(.*)(\.)(.*)/ )
@@ -38,4 +40,24 @@ mixin rimg( )
 			
 		img( src=attributes.src srcset=srcset sizes=sizes alt=attributes.alt class!=attributes.class )
 
-		
+//- Compressed image tag
+mixin cimg( )
+	picture.cimg( class!=attributes.class id!=attributes.id )
+
+
+
+		//- Shared definitions
+		-
+			const [ full, path, filename, dot, extension ] = attributes.src.match( /(.*\/)(.*)(\.)(.*)/ )
+			const sortedSizes = site.system.images.sizes.sort( ( a, b ) => {
+					if( a > b ) return -1
+					if( a < b ) return 1
+					else return 0
+				} )
+			let closestSize = sortedSizes.find( availablesize => availablesize <= attributes.size )
+			const test = closestSize
+			if( !closestSize ) closestSize = sortedSizes[ sortedSizes.length - 1 ]
+			const closestSrc = `${ path }${ filename }-${ closestSize }`
+		source( type="image/avif" src=closestSrc + '.avif' class!=attributes.class )
+		source( type="image/webp" src=closestSrc + '.webp' class!=attributes.class )
+		img( src=closestSrc + '.jpg' alt=attributes.alt class!=attributes.class )
