@@ -42,6 +42,7 @@ npm run build
     - Edit the `system.images` key to include your compression preferences for `jpeg`, `webp` and `avif`
     - Use the `rimg` (responsive img) mixin found in `src/pug/_helpers`
     - Use the `cimg` (compressed img) mixin found in `src/pug/_helpers`
+    - Note: images are not compressed in `NODE_ENV=development` mode which is the `npm start` default, `npm run build` does trigger that actual file optimisation
 2. Separate your CSS for meaningful-paint optimisation
     - Use `src/css/essential-above-the-fold.sass` for essential above the fold styles
     - Use `src/css/styles.sass` for below the fold styles

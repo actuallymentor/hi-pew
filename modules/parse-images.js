@@ -10,11 +10,15 @@ process.setMaxListeners( 0 )
 // Promisify streams
 const stream = ( readstream, writepath, transform ) => new Promise( ( resolve, reject ) => {
 
+	// Dry run config for dev mode
+	const { NODE_ENV } = process.env
+
 	// Make the write stream
 	const write = fs.createWriteStream( writepath )
 
 	// Enable the writing pipe
-	readstream.pipe( transform ).pipe( write )
+	if( NODE_ENV == 'development' ) readstream.pipe( write )
+	else readstream.pipe( transform ).pipe( write )
 	write.on( 'close', resolve )
 	write.on( 'error', reject )
 
