@@ -16,7 +16,7 @@ const compilepug = ( path, filename, css, content ) => Promise.resolve( {
 	baseSlug: content.slug,
 	lang: content.lang,
 	// Compile the pug file with the site config as a local variable
-	html: minify( pug.renderFile( path + filename, { site: site, css: css, content: content } ), {
+	html: minify( pug.renderFile( path + filename, { site: site, css: css, content: content, basedir: path } ), {
 		html5: true,
 		minifyCSS: true,
 		minifyJS: true,

@@ -48,12 +48,19 @@ npm run build
     - Use `src/css/styles.sass` for below the fold styles
 3. Set per-page SEO settings
     - Every `.pug` file may contain it's own metadata and sharing image
+    - The `page` object can set `title`, `desc`, `url`, `published`, `featuredimg` which are used in the `head` meta tags and the footer `application/ld+json` rich snipped data
 4. Confgure deeper browser compatibility
-    - By default `npm start` runs a `caniuse` compatibility check on your SASS
+    - By default `npm start` runs a [ caniuse ]( https://caniuse.com/ ) compatibility check on your SASS
     - Javascript backwards compatibility in `.babelrc`
     - CSS compatibility in `modules/config.js` at `browsers`
 4. Enable auto-deployment
     - Templates for Github pages, Firebase and AWS are available in `.github/workflows`
+5. Use subpages (like `/category/people/john.html`)
+    - Any `.pug` file in `src` will be compiled except those that are in reserved folders or begin with `_`
+    - `src/index.pug` \> `index.html`
+    - `src/pages/contact.pug` \> `/pages/contact.html`
+    - `src/{ assets, content, css, js }/template.pug` \> not rendered
+    - `src/pug/_footer.pug` \> not rendered (unless included in another pug)
 
 ### Multiple languages
 
@@ -64,7 +71,7 @@ module.exports = {
     slug: "/", // The relative URL of this language
     lang: "en", // The language code of this language (use W3 compliant codes)
 
-    // You can creat any keys and access them
+    // You can creat any keys and access them inside pug files
     hero: {
         "title": "something",
         "explanation": "lorem ipsum"

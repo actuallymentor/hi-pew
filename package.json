@@ -4,7 +4,7 @@
   "description": "Static Webpage with Webpack and Browsersync Boilerplate",
   "main": "app.js",
   "scripts": {
-    "nvm": "unset PREFIX && source ~/.nvm/nvm.sh && nvm use && npm i || echo 'No NVM available'",
+    "nvm": "nodever=$(<.nvmrc) && node -v | grep -q \"v$nodever\" && echo \"Correct node version\" && npm i || echo  \"[x] Node version $nodever required\\n\\n\" && exit 1",
     "test": "mocha -r esm",
     "start": "npm run nvm && NODE_ENV=development webpack --progress --watch",
     "build": "npm run nvm && NODE_ENV=production webpack --progress"

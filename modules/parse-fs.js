@@ -20,16 +20,27 @@ const delp = async what => {
 // Make directory if it does not exist yet
 const mkdir = async path => {
 
-	path = normalize( path )
+	
 	const file = await exists( path )
-	if( !file ) return mkdirp( path )
+	console.log( file ? '✅ exists ' : '🛑 not exists ', path )
+	if( !file ) {
+		console.log( '👵 creating ', path )
+		const folder = await mkdirp( path ).catch( e => console.log( 'ERROR!', e ) )
+		console.log( 'Creation of ', path, folder )
+	}
 }
 
 // Read the contents of these files and return as an array
 const readdata = ( path, filename ) => fs.readFile( normalize( `${path}/${filename}` ), 'utf8' ).then( data => ( { filename: filename, data: data } ) )
 
 // Safely write a file by chacking if the path exists
-const safewrite = ( path, file, content ) => mkdir( path ).then( f => writefile( path + file, content ) )
+const safewrite = async ( path, file, content ) => {
+
+	path = normalize( path )
+	await mkdir( path )
+	await writefile( path + file, content )
+
+}
 
 module.exports = {
 	write: writefile,
