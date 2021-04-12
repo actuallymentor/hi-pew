@@ -3,6 +3,8 @@ const { normalize } = require('path')
 const del = require( 'del' )
 const mkdirp = require( 'mkdirp' )
 
+const wait = ms => new Promise( res => setTimeout( res, ms ) )
+
 // Promise structure for writing a file to disk
 const writefile = fs.writeFile
 
@@ -22,11 +24,14 @@ const mkdir = async path => {
 
 	
 	const file = await exists( path )
-	console.log( file ? '✅ exists ' : '🛑 not exists ', path )
+	// console.log( file ? '✅ exists ' : '🛑 not exists ', path )
 	if( !file ) {
-		console.log( '👵 creating ', path )
-		const folder = await mkdirp( path ).catch( e => console.log( 'ERROR!', e ) )
-		console.log( 'Creation of ', path, folder )
+		// console.log( '👵 creating ', path )
+		const folder = await mkdirp( path )
+		// await wait( 5000 )
+		// console.log( 'Creation of ', path, folder )
+		// await wait( 5000 )
+		// file = await exists( path )
 	}
 }
 
@@ -36,9 +41,13 @@ const readdata = ( path, filename ) => fs.readFile( normalize( `${path}/${filena
 // Safely write a file by chacking if the path exists
 const safewrite = async ( path, file, content ) => {
 
-	path = normalize( path )
-	await mkdir( path )
-	await writefile( path + file, content )
+	try {
+		path = normalize( path )
+		await mkdir( path )
+		await writefile( path + file, content )
+	} catch( e ) {
+		console.log( `Error writing ${ path }${ file }: `, e )
+	}
 
 }
 
