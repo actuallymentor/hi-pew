@@ -1,0 +1,1 @@
+(()=>{"use strict";!function(){try{var o,l="production",e=location||{},c=e.href;("development"==l||c&&c.includes("debug"))&&(o=console).log.apply(o,arguments)}catch(o){var n;console.log("Error in logger: ",o),(n=console).log.apply(n,arguments)}}("I am alive")})();
