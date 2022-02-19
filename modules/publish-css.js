@@ -1,4 +1,4 @@
-const sass = require( 'node-sass' )
+const sass = require( 'sass' )
 const { promises: fs } = require( 'fs' )
 const { mkdir } = require( './parse-fs' )
 
@@ -24,44 +24,37 @@ const file = site => new Promise( ( resolve, reject ) => {
 	}
 
 	mkdir( `${site.system.public}assets/css/` ).then( f => { 
-		sass.render( { 
-			file: css.from,
-			// Add source map if in dev mode
-			...( !( process.env.NODE_ENV == 'production' ) && { sourceMap: true, sourceMapEmbed: true } )
-		}, ( err, result ) => { 
-			if( err || !result ) return reject( err )
-			// Run postcss with plugins
-			postcss( [
-				autoprefixer,
-				cssnano,
-				doiuse( { ...site.system.browser.support, onFeatureUsage: cssWarning } )
-			] )
-			.process( result.css, { from: css.from, to: css.to } )
-			.then( result => fs.writeFile( css.to, result.css ) )
-			.then( resolve )
-		} )
+		
+		const result = sass.compile( css.from )
+		if( !result ) return reject( `No valid CSS from ${ css.from }` )
+		// Run postcss with plugins
+		postcss( [
+			autoprefixer,
+			cssnano,
+			doiuse( { ...site.system.browser.support, onFeatureUsage: cssWarning } )
+		] )
+		.process( result.css, { from: css.from, to: css.to } )
+		.then( result => fs.writeFile( css.to, result.css ) )
+		.then( resolve )
+		.catch( err => console.log( err ) )
+
 	} )
 	
  } )
 
 const inline = ( site, path ) => new Promise( ( resolve, reject ) => { 
 
-	sass.render( { 
-		file: path,
-		// Add source map if in dev mode
-		...( !( process.env.NODE_ENV == 'production' ) && { sourceMap: true, sourceMapEmbed: true } )
-	}, ( err, result ) => { 
-		if( err || !result ) return reject( err )
-		// Run postcss with plugins
-		postcss( [
-			autoprefixer,
-			cssnano,
-			doiuse( { ...site.system.browser, onFeatureUsage: cssWarning } )
-		] )
-		.process( result.css, { from: path, to: path + 'dummy' } )
-		.then( result => resolve( result.css ) )
-		.catch( err => console.log( err ) )
-	} )
+	const result = sass.compile( path )
+	if(!result ) return reject( `No valid CSS from ${ path }` )
+	// Run postcss with plugins
+	postcss( [
+		autoprefixer,
+		cssnano,
+		doiuse( { ...site.system.browser, onFeatureUsage: cssWarning } )
+	] )
+	.process( result.css, { from: path, to: path + 'dummy' } )
+	.then( result => resolve( result.css ) )
+	.catch( err => console.log( err ) )
 	
 } )
 

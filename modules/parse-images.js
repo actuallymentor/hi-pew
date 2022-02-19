@@ -4,8 +4,8 @@ const path = require( 'path' )
 const { promises: pfs } = require( 'fs' )
 const { mkdir } = require( __dirname + '/parse-fs' )
 
-// No limit to streams
-process.setMaxListeners( 0 )
+// Higher limit to streams
+process.setMaxListeners( 50 )
 
 // Promisify streams
 const stream = ( readstream, writepath, transform ) => new Promise( ( resolve, reject ) => {
@@ -34,6 +34,11 @@ const compressOneImageToMany = async ( site, filename ) => {
 		// System settings
 		const { system: { images } } = site
 		const { sizes=[], defaultQuality } = images
+
+		const old_listeners = process.getMaxListeners()
+		const new_listeners = old_listeners + ( sizes.length * 3 )
+		console.log( `🔼 Increating maxListeners from ${ old_listeners } to ${ new_listeners }` )
+		process.setMaxListeners( new_listeners )
 
 		console.log( `⏱ Compressing ${ sizes.length * 3 } forms of `, `${ site.system.source }assets/${ filename }` )
 
