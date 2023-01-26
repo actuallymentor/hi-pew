@@ -4,9 +4,6 @@ const path = require( 'path' )
 const { promises: pfs } = require( 'fs' )
 const { mkdir } = require( __dirname + '/parse-fs' )
 
-// Higher limit to streams
-process.setMaxListeners( 50 )
-
 // Promisify streams
 const stream = ( readstream, writepath, transform ) => new Promise( ( resolve, reject ) => {
 
@@ -35,10 +32,9 @@ const compressOneImageToMany = async ( site, filename ) => {
 		const { system: { images } } = site
 		const { sizes=[], defaultQuality } = images
 
-		const old_listeners = process.getMaxListeners()
-		const new_listeners = old_listeners + ( sizes.length * 3 )
-		console.log( `🔼 Increating maxListeners from ${ old_listeners } to ${ new_listeners }` )
-		process.setMaxListeners( new_listeners )
+		// const old_listeners = process.getMaxListeners()
+		// const new_listeners = old_listeners + ( sizes.length * 3 )
+		// process.setMaxListeners( new_listeners )
 
 		console.log( `⏱ Compressing ${ sizes.length * 3 } forms of `, `${ site.system.source }assets/${ filename }` )
 
@@ -71,6 +67,7 @@ const compressOneImageToMany = async ( site, filename ) => {
 
 		// Read stream of the image
 		const imageStream = fs.createReadStream( filePath )
+		
 
 		// Create the folder (or even subfolder) the image is in
 		const parentFolder = path.dirname( filename )
@@ -80,7 +77,13 @@ const compressOneImageToMany = async ( site, filename ) => {
 		const [ fm, ext ] = ( filename && filename.match( /(?:.*)(?:\.)(.*)/ )  ) || []
 		const fileNameWithoutExt = path.basename( filename, `.${ ext }` )
 
-		await Promise.all( [ ...jpegConversionStreams, ...webpConversionStreams, ...avifConversionStreams ].map( ( { convertor, size, extension } ) => {
+		// List all streams to be converted
+		const allStreams = [ ...jpegConversionStreams, ...webpConversionStreams, ...avifConversionStreams ]
+
+		// Set max streams on the imageStream
+		console.log( `🔼 Increating maxListeners to ${ allStreams.length }` )
+		imageStream.setMaxListeners( allStreams.length )
+		await Promise.all( allStreams.map( ( { convertor, size, extension } ) => {
 			return stream( imageStream, `${ site.system.public }/assets/${ fileNameWithoutExt }-${ size }.${ extension }`, convertor )
 		} ) )
 

@@ -16,7 +16,7 @@ const site = require( __dirname + '/modules/config' )
 // Conversions
 const publishpug = require( __dirname + '/modules/publish-pug' )
 const publishassets = require( __dirname + '/modules/publish-assets' )
-
+process.on('warning', e => console.warn(e.stack));
 // Get environment variables
 const dotenv = require( 'dotenv' )
 const { NODE_ENV } = process.env
@@ -93,7 +93,6 @@ if ( dev ) watch( `${ site.system.source }/assets`, { recursive: true }, async (
 
 
 } )
-
 
 module.exports = async f => {
 
