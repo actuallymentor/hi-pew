@@ -81,7 +81,6 @@ const compressOneImageToMany = async ( site, filename ) => {
 		const allStreams = [ ...jpegConversionStreams, ...webpConversionStreams, ...avifConversionStreams ]
 
 		// Set max streams on the imageStream
-		console.log( `🔼 Increating maxListeners to ${ allStreams.length }` )
 		imageStream.setMaxListeners( allStreams.length )
 		await Promise.all( allStreams.map( ( { convertor, size, extension } ) => {
 			return stream( imageStream, `${ site.system.public }/assets/${ fileNameWithoutExt }-${ size }.${ extension }`, convertor )
