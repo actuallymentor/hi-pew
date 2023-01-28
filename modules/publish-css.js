@@ -50,7 +50,7 @@ const inline = ( site, path ) => new Promise( ( resolve, reject ) => {
 	postcss( [
 		autoprefixer,
 		cssnano,
-		doiuse( { ...site.system.browser, onFeatureUsage: cssWarning } )
+		doiuse( { ...site.system.browser.support, onFeatureUsage: cssWarning } )
 	] )
 	.process( result.css, { from: path, to: path + 'dummy' } )
 	.then( result => resolve( result.css ) )
